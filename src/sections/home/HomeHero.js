@@ -62,7 +62,7 @@ export default function HomeHero() {
         <Container>
           <ContentStyle>
             <m.div variants={varFade().inRight}>
-              <Typography variant="h1" sx={{ color: 'common.dark' }}>
+              <Typography variant="h1" sx={{ color: 'common.white' }}>
                 Manage your
                 <br />
                 community online <br /> with
