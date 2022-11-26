@@ -42,10 +42,10 @@ export default function Login() {
           <ContentStyle sx={{ p: 5, backgroundColor: '#161c24', borderRadius: 5 }}>
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h4" gutterBottom sx={{ color: 'common.white' }}>
                   Sign in to Sulong Admin
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+                <Typography sx={{ color: 'common.white' }}>Enter your details below.</Typography>
               </Box>
             </Stack>
 
