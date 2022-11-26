@@ -26,7 +26,6 @@ export default function DashboardHome() {
   const [data, setData] = useState(null);
   useEffect(async () => {
     if (user) {
-      console.log(user);
       setData(user);
     } else {
       const response = await axios.get('/api/users/myProfile', {

@@ -139,24 +139,6 @@ function AuthProvider({ children }) {
     });
   };
 
-  // const login = async (email, password) => {
-  //   const response = await axios.post('/api/account/login', {
-  //     email,
-  //     password,
-  //   });
-
-  //   const { accessToken, user } = response.data;
-
-  //   setSession(accessToken);
-
-  //   dispatch({
-  //     type: 'LOGIN',
-  //     payload: {
-  //       user,
-  //     },
-  //   });
-  // };
-
   const register = async (email, password, firstName, lastName) => {
     const response = await axios.post(
       '/api/users/create-admin',
