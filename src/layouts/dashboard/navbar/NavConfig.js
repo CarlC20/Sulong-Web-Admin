@@ -66,50 +66,65 @@ const navConfig = [
           },
         ],
       },
+      // {
+      //   title: 'requests & inquiries',
+      //   path: PATH_DASHBOARD.requestsInquiries.root,
+      //   icon: ICONS.requests,
+      //   children: [
+      //     {
+      //       title: 'request & inquiry',
+      //       path: PATH_DASHBOARD.requestsInquiries.requestInquiry,
+      //     },
+      //     // {
+      //     //   title: 'inventory',
+      //     //   path: PATH_DASHBOARD.requestsInquiries.inventory,
+      //     // },
+      //   ],
+      // },
+      // {
+      //   title: 'reservations',
+      //   path: PATH_DASHBOARD.reservations.root,
+      //   icon: ICONS.reservations,
+      //   children: [
+      //     {
+      //       title: 'reservation',
+      //       path: PATH_DASHBOARD.reservations.reservation,
+      //     },
+      //     // {
+      //     //   title: 'calendar',
+      //     //   path: PATH_DASHBOARD.reservations.calendar,
+      //     // },
+      //   ],
+      // },
+      // {
+      //   title: 'incident reports',
+      //   path: PATH_DASHBOARD.incidentReports.root,
+      //   icon: ICONS.reports,
+      //   children: [
+      //     {
+      //       title: 'incident report',
+      //       path: PATH_DASHBOARD.incidentReports.incidentReport,
+      //     },
+      //     // {
+      //     //   title: 'chat',
+      //     //   path: PATH_DASHBOARD.incidentReports.chat,
+      //     // },
+      //   ],
+      // },
       {
         title: 'requests & inquiries',
         path: PATH_DASHBOARD.requestsInquiries.root,
         icon: ICONS.requests,
-        children: [
-          {
-            title: 'request & inquiry',
-            path: PATH_DASHBOARD.requestsInquiries.requestInquiry,
-          },
-          {
-            title: 'inventory',
-            path: PATH_DASHBOARD.requestsInquiries.inventory,
-          },
-        ],
       },
       {
-        title: 'reservations',
+        title: 'reservation',
         path: PATH_DASHBOARD.reservations.root,
         icon: ICONS.reservations,
-        children: [
-          {
-            title: 'reservation',
-            path: PATH_DASHBOARD.reservations.reservation,
-          },
-          // {
-          //   title: 'calendar',
-          //   path: PATH_DASHBOARD.reservations.calendar,
-          // },
-        ],
       },
       {
         title: 'incident reports',
         path: PATH_DASHBOARD.incidentReports.root,
         icon: ICONS.reports,
-        children: [
-          {
-            title: 'incident report',
-            path: PATH_DASHBOARD.incidentReports.incidentReport,
-          },
-          // {
-          //   title: 'chat',
-          //   path: PATH_DASHBOARD.incidentReports.chat,
-          // },
-        ],
       },
     ],
   },
@@ -118,20 +133,25 @@ const navConfig = [
   {
     subheader: 'management',
     items: [
+      // {
+      //   title: 'users',
+      //   path: PATH_DASHBOARD.users.root,
+      //   icon: ICONS.user,
+      //   children: [
+      //     {
+      //       title: 'user list',
+      //       path: PATH_DASHBOARD.users.userList,
+      //     },
+      //     // {
+      //     //   title: 'edit',
+      //     //   path: PATH_DASHBOARD.users.edit,
+      //     // },
+      //   ],
+      // },
       {
         title: 'users',
-        path: PATH_DASHBOARD.users.root,
+        path: PATH_DASHBOARD.users.userList,
         icon: ICONS.user,
-        children: [
-          {
-            title: 'user list',
-            path: PATH_DASHBOARD.users.userList,
-          },
-          // {
-          //   title: 'edit',
-          //   path: PATH_DASHBOARD.users.edit,
-          // },
-        ],
       },
       {
         title: 'council',

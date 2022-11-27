@@ -58,10 +58,11 @@ export default function RequestDetails() {
     };
     load();
   }, []);
+
   return (
     <>
       <Card>
-        <CardHeader title="Requests & Inquiries" sx={{ mb: 3 }} />
+        <CardHeader title="Incident Report" sx={{ mb: 3 }} />
         <Scrollbar>
           <TableContainer sx={{ minWidth: 720 }}>
             <Table>
@@ -133,15 +134,24 @@ export default function RequestDetails() {
                             variant="contained"
                             color="error"
                             endIcon={<Iconify icon={'eva:close-circle-fill'} />}
+                            onClick={() => {
+                              const response = axios.delete(`/api/reports/delete/${row.id}`, {
+                                headers: {
+                                  'x-api-key': process.env.REACT_APP_API_KEY,
+                                },
+                              });
+                              const updateReports = reports.filter((r) => r.id !== row.id);
+                              setReports(updateReports);
+                            }}
                           >
                             Reject
                           </Button>
                         </Stack>
                       </TableCell>
 
-                      <TableCell align="right">
+                      {/* <TableCell align="right">
                         <MoreMenuButton id={row.id} reports={reports} setReports={setReports} />
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
               </TableBody>

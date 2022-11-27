@@ -9,28 +9,28 @@ import { BaseOptionChart } from '../../../../components/chart';
 // ----------------------------------------------------------------------
 
 const CHART_DATA = [
+  // {
+  //   year: 'This Week',
+  //   data: [
+  //     { name: 'Completed', data: [48, 24] },
+  //     { name: 'Pending', data: [45, 78] },
+  //   ],
+  // },
   {
-    year: 'This Week',
+    id: '1',
     data: [
-      { name: 'Completed', data: [48, 24] },
-      { name: 'Pending', data: [45, 78] },
-    ],
-  },
-  {
-    year: 'This Month',
-    data: [
-      { name: 'Completed', data: [76, 33] },
-      { name: 'Pending', data: [80, 32] },
+      { name: 'Completed', data: [33] },
+      { name: 'Pending', data: [32] },
     ],
   },
 ];
 
 export default function ReportRatio() {
-  const [seriesData, setSeriesData] = useState('This Week');
+  // const [seriesData, setSeriesData] = useState('This Week');
 
-  const handleChangeSeriesData = (event) => {
-    setSeriesData(event.target.value);
-  };
+  // const handleChangeSeriesData = (event) => {
+  //   setSeriesData(event.target.value);
+  // };
 
   const chartOptions = merge(BaseOptionChart(), {
     stroke: {
@@ -39,11 +39,12 @@ export default function ReportRatio() {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: ['This week', 'This month'],
+      // categories: ['This week', 'This month'],
+      categories: [''],
     },
     tooltip: {
       y: {
-        formatter: (val) => `$${val}`,
+        formatter: (val) => `${val}`,
       },
     },
   });
@@ -52,34 +53,34 @@ export default function ReportRatio() {
     <Card>
       <CardHeader
         title="Ongoing & Finished"
-        action={
-          <TextField
-            select
-            fullWidth
-            value={seriesData}
-            SelectProps={{ native: true }}
-            onChange={handleChangeSeriesData}
-            sx={{
-              '& fieldset': { border: '0 !important' },
-              '& select': { pl: 1, py: 0.5, pr: '24px !important', typography: 'subtitle2' },
-              '& .MuiOutlinedInput-root': { borderRadius: 0.75, bgcolor: 'background.neutral' },
-              '& .MuiNativeSelect-icon': { top: 4, right: 0, width: 20, height: 20 },
-            }}
-          >
-            {CHART_DATA.map((option) => (
-              <option key={option.year} value={option.year}>
-                {option.year}
-              </option>
-            ))}
-          </TextField>
-        }
+        // action={
+        //   <TextField
+        //     select
+        //     fullWidth
+        //     value={seriesData}
+        //     SelectProps={{ native: true }}
+        //     onChange={handleChangeSeriesData}
+        //     sx={{
+        //       '& fieldset': { border: '0 !important' },
+        //       '& select': { pl: 1, py: 0.5, pr: '24px !important', typography: 'subtitle2' },
+        //       '& .MuiOutlinedInput-root': { borderRadius: 0.75, bgcolor: 'background.neutral' },
+        //       '& .MuiNativeSelect-icon': { top: 4, right: 0, width: 20, height: 20 },
+        //     }}
+        //   >
+        //     {CHART_DATA.map((option) => (
+        //       <option key={option.year} value={option.year}>
+        //         {option.year}
+        //       </option>
+        //     ))}
+        //   </TextField>
+        // }
       />
 
       {CHART_DATA.map((item) => (
-        <Box key={item.year} sx={{ mt: 3, mx: 3 }} dir="ltr">
-          {item.year === seriesData && (
-            <ReactApexChart type="bar" series={item.data} options={chartOptions} height={364} />
-          )}
+        <Box key={item.data} sx={{ mt: 3, mx: 3 }} dir="ltr">
+          {/* {item.year === seriesData && ( */}
+          <ReactApexChart type="bar" series={item.data} options={chartOptions} height={364} />
+          {/* )} */}
         </Box>
       ))}
     </Card>

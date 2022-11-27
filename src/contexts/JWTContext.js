@@ -139,32 +139,32 @@ function AuthProvider({ children }) {
     });
   };
 
-  const register = async (email, password, firstName, lastName) => {
-    const response = await axios.post(
-      '/api/users/create-admin',
-      {
-        email,
-        password,
-        firstName,
-        lastName,
-      },
-      {
-        headers: {
-          'x-api-key': process.env.REACT_APP_API_KEY,
-          'Access-Control-Allow-Origin': '*',
-        },
-      }
-    );
-    const { accessToken, user } = response.data;
+  // const register = async (email, password, firstName, lastName) => {
+  //   const response = await axios.post(
+  //     '/api/users/create-admin',
+  //     {
+  //       email,
+  //       password,
+  //       firstName,
+  //       lastName,
+  //     },
+  //     {
+  //       headers: {
+  //         'x-api-key': process.env.REACT_APP_API_KEY,
+  //         'Access-Control-Allow-Origin': '*',
+  //       },
+  //     }
+  //   );
+  //   const { accessToken, user } = response.data;
 
-    window.localStorage.setItem('accessToken', accessToken);
-    dispatch({
-      type: 'REGISTER',
-      payload: {
-        user,
-      },
-    });
-  };
+  //   window.localStorage.setItem('accessToken', accessToken);
+  //   dispatch({
+  //     type: 'REGISTER',
+  //     payload: {
+  //       user,
+  //     },
+  //   });
+  // };
 
   const logout = async () => {
     setSession(null);
@@ -178,7 +178,7 @@ function AuthProvider({ children }) {
         method: 'jwt',
         login,
         logout,
-        register,
+        // register,
       }}
     >
       {children}

@@ -36,3 +36,6 @@ export { default as Opera } from './opera.png';
 export { default as OperaGX } from './operagx.png';
 
 export { default as ligaPic } from './liga.jpg';
+
+export { default as TermsAndConditions } from './terms-conditions.JPG';
+export { default as PrivacyPolicy } from './privacy-policy.JPG';

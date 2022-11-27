@@ -28,16 +28,16 @@ export default function RequestInquiry() {
         />
 
         <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <RequestDetails />
+          </Grid>
+
           <Grid item xs={12} md={6}>
             <RequestType />
           </Grid>
 
           <Grid item xs={12} md={6}>
             <RequestRatio />
-          </Grid>
-
-          <Grid item xs={12}>
-            <RequestDetails />
           </Grid>
         </Grid>
       </Container>

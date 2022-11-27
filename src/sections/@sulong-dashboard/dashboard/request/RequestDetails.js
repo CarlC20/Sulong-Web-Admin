@@ -140,14 +140,23 @@ export default function RequestDetails() {
                             variant="contained"
                             color="error"
                             endIcon={<Iconify icon={'eva:close-circle-fill'} />}
+                            onClick={() => {
+                              const response = axios.delete(`/api/requests/delete/${row.id}`, {
+                                headers: {
+                                  'x-api-key': process.env.REACT_APP_API_KEY,
+                                },
+                              });
+                              const updateRequests = requests.filter((r) => r.id !== row.id);
+                              setRequests(updateRequests);
+                            }}
                           >
                             Reject
                           </Button>
                         </Stack>
                       </TableCell>
-                      <TableCell align="right">
+                      {/* <TableCell align="right">
                         <MoreMenuButton requests={requests} id={row.id} setRequests={setRequests} />
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
               </TableBody>

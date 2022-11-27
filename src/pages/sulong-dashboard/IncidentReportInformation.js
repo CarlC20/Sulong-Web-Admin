@@ -28,16 +28,16 @@ export default function IncidentReportInformation() {
         />
 
         <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <ReportDetails />
+          </Grid>
+
           <Grid item xs={12} md={6}>
             <ReportType />
           </Grid>
 
           <Grid item xs={12} md={6}>
             <ReportRatio />
-          </Grid>
-
-          <Grid item xs={12}>
-            <ReportDetails />
           </Grid>
         </Grid>
       </Container>

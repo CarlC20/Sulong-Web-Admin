@@ -51,7 +51,6 @@ export default function RegisterForm() {
 
   const {
     reset,
-
     setError,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -59,14 +58,12 @@ export default function RegisterForm() {
 
   const onSubmit = async (data) => {
     const payload = {};
-
     payload.email = data.email;
     payload.password = data.password;
     payload.first_name = data.firstName;
     payload.last_name = data.lastName;
 
     try {
-      // await register(data.email, data.password, data.firstName, data.lastName);
       await new Promise((resolve) => setTimeout(resolve, 500));
       await createAdmin(payload);
       reset();
@@ -74,10 +71,10 @@ export default function RegisterForm() {
       navigate(PATH_DASHBOARD.users.userList);
     } catch (error) {
       console.error(error);
-      reset();
-      if (isMountedRef.current) {
-        setError('afterSubmit', error);
-      }
+      // reset();
+      // if (isMountedRef.current) {
+      //   setError('afterSubmit', error);
+      // }
     }
   };
 

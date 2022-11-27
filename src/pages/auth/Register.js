@@ -9,7 +9,7 @@ import Page from '../../components/Page';
 // sections
 import { RegisterForm } from '../../sections/auth/register';
 
-import { AuthPage } from '../../assets';
+import { AuthPage, TermsAndConditions, PrivacyPolicy } from '../../assets';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -56,11 +56,11 @@ export default function Register() {
 
             <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
               By registering, you agree to our&nbsp;
-              <Link underline="always" color="text.primary" href="#">
+              <Link underline="always" color="text.primary" href={TermsAndConditions} target="_blank">
                 Terms of Service
               </Link>
               &nbsp;and&nbsp;
-              <Link underline="always" color="text.primary" href="#">
+              <Link underline="always" color="text.primary" href={PrivacyPolicy} target="_blank">
                 Privacy Policy
               </Link>
               .

@@ -134,15 +134,25 @@ export default function ReservationDetails() {
                             variant="contained"
                             color="error"
                             endIcon={<Iconify icon={'eva:close-circle-fill'} />}
+                            onClick={() => {
+                              const response = axios.delete(`/api/reservations/delete/${row.id}`, {
+                                headers: {
+                                  'x-api-key': process.env.REACT_APP_API_KEY,
+                                },
+                              });
+                              const updateReservations = reservations.filter((r) => r.id !== row.id);
+
+                              setReservations(updateReservations);
+                            }}
                           >
                             Reject
                           </Button>
                         </Stack>
                       </TableCell>
 
-                      <TableCell align="right">
+                      {/* <TableCell align="right">
                         <MoreMenuButton reservations={reservations} id={row.id} setReservations={setReservations} />
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 <RequestPopup title="Request Description" openPopup={openPopup} setOpenPopup={setOpenPopup}>

@@ -35,15 +35,16 @@ export default function LoginForm() {
   //   password: 'demo1234',
   //   remember: true,
   // };
-  const defaultValues = {
-    email: 'testing@gmail.com',
-    password: '12345',
-    remember: true,
-  };
+
+  // const defaultValues = {
+  //   email: 'testing@gmail.com',
+  //   password: '12345',
+  //   remember: true,
+  // };
 
   const methods = useForm({
     resolver: yupResolver(LoginSchema),
-    defaultValues,
+    // defaultValues,
   });
 
   const {
