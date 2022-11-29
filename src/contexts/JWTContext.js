@@ -128,43 +128,72 @@ function AuthProvider({ children }) {
     );
 
     const { accessToken, user } = response.data;
-
     setSession(accessToken);
-
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        user,
+    const postRes = await axios.get('/api/users/myProfile', {
+      headers: {
+        'x-api-key': process.env.REACT_APP_API_KEY,
       },
     });
+    console.log(postRes?.data);
+    if (postRes?.data?.role?.role_name !== 'admin') {
+      console.log(postRes?.data?.role?.role_name);
+      setSession(null);
+      throw new Error(null, { message: 'Operation Failed', details: 'Invalid details' });
+    } else {
+      console.log(response);
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          user,
+        },
+      });
+    }
   };
 
-  // const register = async (email, password, firstName, lastName) => {
-  //   const response = await axios.post(
-  //     '/api/users/create-admin',
-  //     {
-  //       email,
-  //       password,
-  //       firstName,
-  //       lastName,
-  //     },
-  //     {
-  //       headers: {
-  //         'x-api-key': process.env.REACT_APP_API_KEY,
-  //         'Access-Control-Allow-Origin': '*',
-  //       },
-  //     }
-  //   );
+  // const login = async (email, password) => {
+  //   const response = await axios.post('/api/account/login', {
+  //     email,
+  //     password,
+  //   });
+
   //   const { accessToken, user } = response.data;
 
-  //   window.localStorage.setItem('accessToken', accessToken);
+  //   setSession(accessToken);
+
   //   dispatch({
-  //     type: 'REGISTER',
+  //     type: 'LOGIN',
   //     payload: {
   //       user,
   //     },
   //   });
   // };
+
+  const register = async (email, password, firstName, lastName) => {
+    const response = await axios.post(
+      '/api/users/create-admin',
+      {
+        email,
+        password,
+        firstName,
+        lastName,
+      },
+      {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY,
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    );
+    const { accessToken, user } = response.data;
+
+    window.localStorage.setItem('accessToken', accessToken);
+    dispatch({
+      type: 'REGISTER',
+      payload: {
+        user,
+      },
+    });
+  };
 
   const logout = async () => {
     setSession(null);
@@ -178,7 +207,7 @@ function AuthProvider({ children }) {
         method: 'jwt',
         login,
         logout,
-        // register,
+        register,
       }}
     >
       {children}
