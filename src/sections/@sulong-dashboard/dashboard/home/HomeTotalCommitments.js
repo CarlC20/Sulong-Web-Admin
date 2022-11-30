@@ -31,7 +31,7 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [12244, 53345, 44313];
+const CHART_DATA = [27, 31, 33];
 
 export default function HomeTotalCommitments() {
   const theme = useTheme();

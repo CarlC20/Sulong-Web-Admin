@@ -37,9 +37,9 @@ export const councilCards = [...Array(5)].map((_, index) => ({
     index
   ],
   yearbookSaying: [
-    '"Ano kaya magandang caption sa graduation?"',
+    '"Jack of all trades is a master of none, but oftentimes better than a master of one."',
     '"Success is not final, failure is not fatal. It is the courage to continue that counts. Be different. Be you."',
-    '"Don’t change to me from the near of you!"',
+    '"Im an addict, addicted to success, thankfully there’s no rehab for success.. otw to be Top G"',
     '"If you want it, go for it. Take a risk. Don’t always play it safe or you’ll die wondering."',
     '". . ."',
   ][index],
