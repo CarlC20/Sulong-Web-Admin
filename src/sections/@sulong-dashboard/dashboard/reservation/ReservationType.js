@@ -31,7 +31,7 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [12, 33, 14, 25];
+const CHART_DATA = [9, 6, 9, 5, 0];
 
 export default function ReservationType() {
   const theme = useTheme();
@@ -43,7 +43,7 @@ export default function ReservationType() {
       theme.palette.chart.violet[0],
       theme.palette.chart.yellow[0],
     ],
-    labels: ['Birthday', 'Christening', 'Funeral', 'Others'],
+    labels: ['Barangay Gym', 'Barangay Hall', 'Stage', 'Court', 'Clinic', 'Others'],
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
@@ -63,7 +63,7 @@ export default function ReservationType() {
 
   return (
     <Card>
-      <CardHeader title="Type of Event" />
+      <CardHeader title="Facility" />
       <ChartWrapperStyle dir="ltr">
         <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
       </ChartWrapperStyle>

@@ -31,7 +31,7 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [32, 65, 22, 19, 27, 65];
+const CHART_DATA = [5, 6, 5, 3, 6, 2];
 
 export default function RequestType() {
   const theme = useTheme();
@@ -43,7 +43,7 @@ export default function RequestType() {
     //   theme.palette.chart.violet[0],
     //   theme.palette.chart.yellow[0],
     // ],
-    labels: ['Barangay Clearance', 'Barangay ID', 'Business Permit', 'Travel Pass', 'Items', 'Others'],
+    labels: ['Barangay Clearance', 'Barangay ID', 'Business Permit', 'Travel Pass', 'Health Certificate', 'Others'],
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },

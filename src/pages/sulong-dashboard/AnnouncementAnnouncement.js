@@ -76,6 +76,23 @@ export default function AnnouncementAnnouncement() {
     getAllPosts();
   }, [getAllPosts]);
 
+  const cover = [
+    {
+      id: 1,
+      cover:
+        'https://images.pexels.com/photos/7722685/pexels-photo-7722685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    },
+    {
+      id: 2,
+      cover: 'http://ligaocity.albay.gov.ph/wp-content/uploads/2017/03/interbrgy.jpg',
+    },
+    {
+      id: 3,
+      cover:
+        'https://play-lh.googleusercontent.com/V_P-I-UENK93ahkQgOWel8X8yFxjhOOfMAZjxXrqp311Gm_RBtlDXHLQhwFZN8n4aIQ',
+    },
+  ];
+
   const mockAnnouncements = [
     {
       id: 1,

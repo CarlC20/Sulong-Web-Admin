@@ -126,6 +126,17 @@ export default function ReservationDetails() {
                             variant="contained"
                             color="info"
                             endIcon={<Iconify icon={'eva:checkmark-circle-2-outline'} />}
+                            onClick={async () => {
+                              const response = await axios.put(
+                                `/api/reservations/update/${row.id}`,
+                                { status: 'Completed' },
+                                {
+                                  headers: {
+                                    'x-api-key': process.env.REACT_APP_API_KEY,
+                                  },
+                                }
+                              );
+                            }}
                           >
                             Complete
                           </Button>

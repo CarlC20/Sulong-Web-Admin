@@ -132,6 +132,17 @@ export default function RequestDetails() {
                             color="info"
                             variant="contained"
                             endIcon={<Iconify icon={'eva:checkmark-circle-2-outline'} />}
+                            onClick={async () => {
+                              const response = await axios.put(
+                                `/api/requests/update/${row.id}`,
+                                { status: 'Completed' },
+                                {
+                                  headers: {
+                                    'x-api-key': process.env.REACT_APP_API_KEY,
+                                  },
+                                }
+                              );
+                            }}
                           >
                             Complete
                           </Button>

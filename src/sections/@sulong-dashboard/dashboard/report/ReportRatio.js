@@ -19,8 +19,8 @@ const CHART_DATA = [
   {
     id: '1',
     data: [
-      { name: 'Completed', data: [33] },
-      { name: 'Pending', data: [32] },
+      { name: 'Completed', data: [0] },
+      { name: 'Pending', data: [30] },
     ],
   },
 ];

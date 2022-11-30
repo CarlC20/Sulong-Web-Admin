@@ -31,7 +31,7 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [11, 4, 25, 12, 10, 15];
+const CHART_DATA = [7, 5, 5, 5, 7, 2];
 
 export default function ReportType() {
   const theme = useTheme();
