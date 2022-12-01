@@ -16,14 +16,15 @@ const CARDS = [
   },
   {
     icon: 'https://minimal-assets-api.vercel.app/assets/icons/ic_code.svg',
-    title: 'Development',
-    description: 'Easy to customize and extend each component, saving you time and money.',
+    title: 'Client-Based',
+    description: 'We can modify our application based on what the client wanted to be included to our application.',
   },
   {
     // icon: '/logo/logo_single.svg',
     icon: '/favicon/favicon-50x50.png',
     title: 'Branding',
-    description: 'Consistent design in colors, fonts ... makes brand recognition easy.',
+    description:
+      'Our application helps the barangay on building their branding to establish their growing relationship between the barangay officials and constituents.',
   },
 ];
 
