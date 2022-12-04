@@ -104,7 +104,7 @@ export default function AnnouncementNewForm() {
 
       if (file) {
         setValue(
-          'cover',
+          'coverUrl',
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
@@ -132,7 +132,7 @@ export default function AnnouncementNewForm() {
 
                 <div>
                   <LabelStyle>Cover</LabelStyle>
-                  <RHFUploadSingleFile name="cover" accept="image/*" maxSize={3145728} onDrop={handleDrop} />
+                  <RHFUploadSingleFile name="coverUrl" accept="image/*" maxSize={3145728} onDrop={handleDrop} />
                 </div>
               </Stack>
             </Card>

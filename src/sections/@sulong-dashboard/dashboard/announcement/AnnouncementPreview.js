@@ -25,11 +25,11 @@ AnnouncementPreview.propTypes = {
 export default function AnnouncementPreview({ values, isValid, isSubmitting, isOpen, onClose, onSubmit }) {
   const { title, content, description } = values;
 
-  const cover = isString(values.cover) ? values.cover : values.cover?.preview;
+  const coverUrl = isString(values.coverUrl) ? values.coverUrl : values.coverUrl?.preview;
 
-  const hasContent = title || description || content || cover;
+  const hasContent = title || description || content || coverUrl;
 
-  const hasHero = title || cover;
+  const hasHero = title || coverUrl;
 
   return (
     <DialogAnimate fullScreen open={isOpen} onClose={onClose}>
@@ -45,7 +45,7 @@ export default function AnnouncementPreview({ values, isValid, isSubmitting, isO
 
       {hasContent ? (
         <Scrollbar>
-          {hasHero && <PreviewHero title={title || ''} cover={cover} />}
+          {hasHero && <PreviewHero title={title || ''} cover={coverUrl} />}
           <Container>
             <Box sx={{ mt: 5, mb: 10 }}>
               <Typography variant="h6" sx={{ mb: 5 }}>
