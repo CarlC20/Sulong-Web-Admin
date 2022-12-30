@@ -68,7 +68,6 @@ export default function DashboardHome() {
 
   useEffect(async () => {
     if (user) {
-      console.log(user);
       setData(user);
     } else {
       const response = await axios.get('/api/users/myProfile', {
@@ -163,7 +162,7 @@ export default function DashboardHome() {
           ],
         },
       ]);
-      console.log(reservationRes.data);
+
       setTypeRequest(typeCollector(REQUESTLABEL, requestRes.data));
       setTypeEvent(typeCollector(RESERVATIONLABEL, reservationRes.data));
       setTypeIncident(typeCollector(REPORTLABEL, reportRes.data));

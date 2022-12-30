@@ -46,6 +46,6 @@ export const typeCollector = (label, refData) => {
     const list = refData.filter((r) => r?.type === el || r?.facility === el);
     data.push(list.length);
   });
-  console.log(data);
+
   return data;
 };
