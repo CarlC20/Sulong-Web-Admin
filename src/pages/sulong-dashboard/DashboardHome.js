@@ -60,7 +60,7 @@ export default function DashboardHome() {
     'Barangay Id',
     'Business Permit',
     'Travel Pass',
-    'Health Cetificate',
+    'Health Certificate',
     'Others',
   ];
   const RESERVATIONLABEL = ['Brgy Gym', 'Brgy Hall', 'Stage', 'Court', 'Clinic', 'Others'];

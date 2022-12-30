@@ -22,7 +22,7 @@ export default function RequestInquiry() {
     'Barangay Id',
     'Business Permit',
     'Travel Pass',
-    'Health Cetificate',
+    'Health Certificate',
     'Others',
   ];
 
