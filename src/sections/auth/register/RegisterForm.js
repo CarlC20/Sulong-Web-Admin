@@ -34,6 +34,7 @@ export default function RegisterForm() {
     firstName: Yup.string().required('First name required'),
     lastName: Yup.string().required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    usermame: Yup.string().email('Username required'),
     password: Yup.string().required('Password is required'),
   });
 
@@ -41,6 +42,7 @@ export default function RegisterForm() {
     firstName: '',
     lastName: '',
     email: '',
+    username: '',
     password: '',
   };
 
@@ -58,23 +60,27 @@ export default function RegisterForm() {
 
   const onSubmit = async (data) => {
     const payload = {};
+
     payload.email = data.email;
+    payload.username = data.username;
     payload.password = data.password;
     payload.first_name = data.firstName;
     payload.last_name = data.lastName;
-
+    // console.log(payload);
     try {
+      // await register(data.email, data.password, data.firstName, data.lastName);
       await new Promise((resolve) => setTimeout(resolve, 500));
+      // console.log(payload);
       await createAdmin(payload);
       reset();
       enqueueSnackbar('Account added successfully!');
       navigate(PATH_DASHBOARD.users.userList);
     } catch (error) {
       console.error(error);
-      // reset();
-      // if (isMountedRef.current) {
-      //   setError('afterSubmit', error);
-      // }
+      reset();
+      if (isMountedRef.current) {
+        setError('afterSubmit', error);
+      }
     }
   };
 
@@ -87,9 +93,8 @@ export default function RegisterForm() {
           <RHFTextField name="firstName" label="First name" />
           <RHFTextField name="lastName" label="Last name" />
         </Stack>
-
+        <RHFTextField name="username" label="Username" />
         <RHFTextField name="email" label="Email address" />
-
         <RHFTextField
           name="password"
           label="Password"

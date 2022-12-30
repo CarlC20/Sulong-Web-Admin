@@ -59,7 +59,7 @@ export default function LoginForm() {
       await login(data.email, data.password);
       // console.log(await login);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       reset();
 
       if (isMountedRef.current) {

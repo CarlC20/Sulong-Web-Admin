@@ -31,11 +31,12 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [5, 6, 5, 3, 6, 2];
+// const CHART_DATA = [32, 65, 22, 19, 27, 65];
+// const chartData = [10, 10, 10, 10, 10];
 
-export default function RequestType() {
+export default function RequestType({ chartData, labels }) {
   const theme = useTheme();
-
+  // chartData
   const chartOptions = merge(BaseOptionChart(), {
     // colors: [
     //   theme.palette.primary.main,
@@ -43,7 +44,7 @@ export default function RequestType() {
     //   theme.palette.chart.violet[0],
     //   theme.palette.chart.yellow[0],
     // ],
-    labels: ['Barangay Clearance', 'Barangay ID', 'Business Permit', 'Travel Pass', 'Health Certificate', 'Others'],
+    labels,
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
@@ -65,7 +66,7 @@ export default function RequestType() {
     <Card>
       <CardHeader title="Type of Request" />
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
+        <ReactApexChart type="pie" series={chartData} options={chartOptions} height={280} />
       </ChartWrapperStyle>
     </Card>
   );

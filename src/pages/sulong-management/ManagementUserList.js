@@ -67,7 +67,8 @@ export default function ManagementUserList() {
           'x-api-key': process.env.REACT_APP_API_KEY,
         },
       });
-      setUserList(response.data);
+      console.log(response.data);
+      setUserList(response.data.filter((r) => r.role.role_name !== 'admin'));
     };
     load();
   }, []);

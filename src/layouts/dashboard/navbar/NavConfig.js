@@ -117,7 +117,7 @@ const navConfig = [
         icon: ICONS.requests,
       },
       {
-        title: 'reservation',
+        title: 'reservations',
         path: PATH_DASHBOARD.reservations.root,
         icon: ICONS.reservations,
       },

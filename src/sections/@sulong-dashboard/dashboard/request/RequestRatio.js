@@ -5,33 +5,31 @@ import ReactApexChart from 'react-apexcharts';
 import { Card, CardHeader, Box, TextField } from '@mui/material';
 // components
 import { BaseOptionChart } from '../../../../components/chart';
+import { filterCompleted, filterPending } from '../../../../utils/marvsutils';
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [
-  // {
-  //   id: 'This Week',
-  //   data: [
-  //     { name: 'Completed', data: [48, 24] },
-  //     { name: 'Pending', data: [45, 78] },
-  //   ],
-  // },
-  {
-    id: '1',
-    data: [
-      { name: 'Completed', data: [0] },
-      { name: 'Pending', data: [27] },
-    ],
-  },
-];
-
-export default function RequestRatio() {
+export default function RequestRatio({ requests }) {
   // const [seriesData, setSeriesData] = useState('This Week');
 
   // const handleChangeSeriesData = (event) => {
   //   setSeriesData(event.target.value);
   // };
-
+  const CHART_DATA = [
+    {
+      id: '1',
+      data: [
+        {
+          name: 'Completed',
+          data: [filterCompleted(requests)],
+        },
+        {
+          name: 'Pending',
+          data: [filterPending(requests)],
+        },
+      ],
+    },
+  ];
   const chartOptions = merge(BaseOptionChart(), {
     stroke: {
       show: true,
@@ -76,8 +74,8 @@ export default function RequestRatio() {
         // }
       />
 
-      {CHART_DATA.map((item) => (
-        <Box key={item.data} sx={{ mt: 3, mx: 3 }} dir="ltr">
+      {CHART_DATA.map((item, index) => (
+        <Box key={index} sx={{ mt: 3, mx: 3 }} dir="ltr">
           {/* {item.id === seriesData && ( */}
           <ReactApexChart type="bar" series={item.data} options={chartOptions} height={364} />
           {/* )} */}

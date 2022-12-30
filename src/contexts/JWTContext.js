@@ -138,7 +138,7 @@ function AuthProvider({ children }) {
     if (postRes?.data?.role?.role_name !== 'admin') {
       console.log(postRes?.data?.role?.role_name);
       setSession(null);
-      alert('Invalid Access!');
+      throw new Error(null, { message: 'Operation Failed', details: 'Invalid details' });
     } else {
       console.log(response);
       dispatch({

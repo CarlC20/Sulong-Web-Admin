@@ -61,7 +61,7 @@ AnnouncementContent.propTypes = {
 };
 
 export default function AnnouncementContent({ post }) {
-  const { coverUrl, title, author, createdAt } = post;
+  const { title, author, createdAt } = post;
   // const { coverUrl, title, author, createdAt } = post;
 
   return (
@@ -87,8 +87,8 @@ export default function AnnouncementContent({ post }) {
       </FooterStyle>
 
       <OverlayStyle />
-      {/* <Image alt="post cover" src={cover} ratio="16/9" /> */}
-      <Image alt="post cover" src={coverUrl} ratio="16/9" />
+      <Image alt="post cover" src={post.cover_url} ratio="16/9" />
+      {/* <Image alt="post cover" src={coverUrl} ratio="16/9" /> */}
     </Box>
   );
 }

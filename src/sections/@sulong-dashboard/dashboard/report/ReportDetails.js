@@ -34,35 +34,80 @@ import axios from '../../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
-export default function RequestDetails() {
+export default function ReportDetails({ reports, setReports, load }) {
   const theme = useTheme();
   const [openPopup, setOpenPopup] = useState(false);
   const isLight = theme.palette.mode === 'light';
   const descriptionRef = useRef();
-  const [reports, setReports] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  useEffect(() => {
-    const load = async () => {
-      const accessToken = localStorage.getItem('accessToken');
-      const response = await axios.get('/api/reports', {
+  const rejectHandler = async (data) => {
+    const { id, description } = data;
+
+    await axios.delete(`/api/reports/delete/${id}`, {
+      headers: {
+        'x-api-key': process.env.REACT_APP_API_KEY,
+      },
+    });
+    const res = await axios.post(
+      '/api/notifications/create',
+      {
+        name: `${data.user.first_name} ${data.user.last_name}`,
+        type: 'incident_report',
+        description,
+        condition: 'Rejected',
+        receiver: 'user',
+        email: data.user.email,
+      },
+      {
         headers: {
           'x-api-key': process.env.REACT_APP_API_KEY,
         },
-      });
-      setReports(response.data);
-    };
+      }
+    );
     load();
-  }, []);
+  };
+  const completeHandler = async (data) => {
+    const { id, description } = data;
+
+    await axios.put(
+      `/api/reports/update/${id}`,
+      {
+        status: 'Completed',
+      },
+      {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY,
+        },
+      }
+    );
+    const res = await axios.post(
+      '/api/notifications/create',
+      {
+        name: `${data.user.first_name} ${data.user.last_name}`,
+        type: 'incident_report',
+        description,
+        condition: 'Completed',
+        receiver: 'user',
+        email: data.user.email,
+      },
+      {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY,
+        },
+      }
+    );
+    load();
+  };
 
   return (
     <>
       <Card>
-        <CardHeader title="Incident Report" sx={{ mb: 3 }} />
+        <CardHeader title="Incident Reports" sx={{ mb: 3 }} />
         <Scrollbar>
           <TableContainer sx={{ minWidth: 720 }}>
             <Table>
@@ -121,42 +166,28 @@ export default function RequestDetails() {
 
                       <TableCell>
                         <Stack direction="row" spacing={2} alignItems="flex-end" sx={{ flexGrow: 1 }}>
-                          <Button
-                            fullWidth
-                            variant="contained"
-                            color="info"
-                            endIcon={<Iconify icon={'eva:checkmark-circle-2-outline'} />}
-                            onClick={async () => {
-                              const response = await axios.put(
-                                `/api/reports/update/${row.id}`,
-                                { status: 'Completed' },
-                                {
-                                  headers: {
-                                    'x-api-key': process.env.REACT_APP_API_KEY,
-                                  },
-                                }
-                              );
-                            }}
-                          >
-                            Complete
-                          </Button>
-                          <Button
-                            fullWidth
-                            variant="contained"
-                            color="error"
-                            endIcon={<Iconify icon={'eva:close-circle-fill'} />}
-                            onClick={() => {
-                              const response = axios.delete(`/api/reports/delete/${row.id}`, {
-                                headers: {
-                                  'x-api-key': process.env.REACT_APP_API_KEY,
-                                },
-                              });
-                              const updateReports = reports.filter((r) => r.id !== row.id);
-                              setReports(updateReports);
-                            }}
-                          >
-                            Reject
-                          </Button>
+                          {row.status !== 'Completed' && (
+                            <>
+                              <Button
+                                fullWidth
+                                onClick={() => completeHandler(row)}
+                                variant="contained"
+                                color="info"
+                                endIcon={<Iconify icon={'eva:checkmark-circle-2-outline'} />}
+                              >
+                                Complete
+                              </Button>
+                              <Button
+                                fullWidth
+                                onClick={() => rejectHandler(row)}
+                                variant="contained"
+                                color="error"
+                                endIcon={<Iconify icon={'eva:close-circle-fill'} />}
+                              >
+                                Reject
+                              </Button>
+                            </>
+                          )}
                         </Stack>
                       </TableCell>
 
@@ -241,7 +272,7 @@ function MoreMenuButton({ id, setReports, reports }) {
           '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
         }}
       >
-        <MenuItem>
+        {/* <MenuItem>
           <Iconify icon={'eva:download-fill'} sx={{ ...ICON }} />
           Download
         </MenuItem>
@@ -249,7 +280,7 @@ function MoreMenuButton({ id, setReports, reports }) {
         <MenuItem>
           <Iconify icon={'eva:printer-fill'} sx={{ ...ICON }} />
           Print
-        </MenuItem>
+        </MenuItem> */}
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 

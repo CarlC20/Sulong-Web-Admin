@@ -36,11 +36,11 @@ import { RequestPopup, RequestDescription } from './index';
 
 // ----------------------------------------------------------------------
 
-export default function RequestDetails() {
+export default function RequestDetails({ requests, setRequests, load }) {
   const theme = useTheme();
   const [openPopup, setOpenPopup] = useState(false);
   const isLight = theme.palette.mode === 'light';
-  const [requests, setRequests] = useState([]);
+  // const [requests, setRequests] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
   const handleChangeRowsPerPage = (event) => {
@@ -63,6 +63,64 @@ export default function RequestDetails() {
     };
     load();
   }, []);
+  const rejectHandler = async (data) => {
+    const { id, description } = data;
+
+    await axios.delete(`/api/requests/delete/${id}`, {
+      headers: {
+        'x-api-key': process.env.REACT_APP_API_KEY,
+      },
+    });
+    const res = await axios.post(
+      '/api/notifications/create',
+      {
+        name: `${data.user.first_name} ${data.user.last_name}`,
+        type: 'request_inquiries',
+        description,
+        condition: 'Rejected',
+        receiver: 'user',
+        email: data.user.email,
+      },
+      {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY,
+        },
+      }
+    );
+    load();
+  };
+  const completeHandler = async (data) => {
+    const { id, description } = data;
+
+    await axios.put(
+      `/api/requests/update/${id}`,
+      {
+        status: 'Completed',
+      },
+      {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY,
+        },
+      }
+    );
+    const res = await axios.post(
+      '/api/notifications/create',
+      {
+        name: `${data.user.first_name} ${data.user.last_name}`,
+        type: 'request_inquiries',
+        description,
+        condition: 'Completed',
+        receiver: 'user',
+        email: data.user.email,
+      },
+      {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY,
+        },
+      }
+    );
+    load();
+  };
 
   // ===================
   return (
@@ -127,42 +185,28 @@ export default function RequestDetails() {
                       </TableCell>
                       <TableCell>
                         <Stack direction="row" spacing={2} alignItems="flex-end" sx={{ flexGrow: 1 }}>
-                          <Button
-                            fullWidth
-                            color="info"
-                            variant="contained"
-                            endIcon={<Iconify icon={'eva:checkmark-circle-2-outline'} />}
-                            onClick={async () => {
-                              const response = await axios.put(
-                                `/api/requests/update/${row.id}`,
-                                { status: 'Completed' },
-                                {
-                                  headers: {
-                                    'x-api-key': process.env.REACT_APP_API_KEY,
-                                  },
-                                }
-                              );
-                            }}
-                          >
-                            Complete
-                          </Button>
-                          <Button
-                            fullWidth
-                            variant="contained"
-                            color="error"
-                            endIcon={<Iconify icon={'eva:close-circle-fill'} />}
-                            onClick={() => {
-                              const response = axios.delete(`/api/requests/delete/${row.id}`, {
-                                headers: {
-                                  'x-api-key': process.env.REACT_APP_API_KEY,
-                                },
-                              });
-                              const updateRequests = requests.filter((r) => r.id !== row.id);
-                              setRequests(updateRequests);
-                            }}
-                          >
-                            Reject
-                          </Button>
+                          {row.status !== 'Completed' && (
+                            <>
+                              <Button
+                                fullWidth
+                                color="info"
+                                onClick={() => completeHandler(row)}
+                                variant="contained"
+                                endIcon={<Iconify icon={'eva:checkmark-circle-2-outline'} />}
+                              >
+                                Complete
+                              </Button>
+                              <Button
+                                fullWidth
+                                variant="contained"
+                                color="error"
+                                onClick={() => rejectHandler(row)}
+                                endIcon={<Iconify icon={'eva:close-circle-fill'} />}
+                              >
+                                Reject
+                              </Button>
+                            </>
+                          )}
                         </Stack>
                       </TableCell>
                       {/* <TableCell align="right">
@@ -242,7 +286,7 @@ function MoreMenuButton({ id, setRequests, requests }) {
           '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
         }}
       >
-        <MenuItem>
+        {/* <MenuItem>
           <Iconify icon={'eva:download-fill'} sx={{ ...ICON }} />
           Download
         </MenuItem>
@@ -250,7 +294,7 @@ function MoreMenuButton({ id, setRequests, requests }) {
         <MenuItem>
           <Iconify icon={'eva:printer-fill'} sx={{ ...ICON }} />
           Print
-        </MenuItem>
+        </MenuItem> */}
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 

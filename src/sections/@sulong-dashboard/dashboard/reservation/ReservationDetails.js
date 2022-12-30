@@ -34,8 +34,8 @@ import axios from '../../../../utils/axios';
 
 // ----------------------------------------------------------------------
 
-export default function ReservationDetails() {
-  const [reservations, setReservations] = useState([]);
+export default function ReservationDetails({ reservations, setReservations, load }) {
+  // const [reservations, setReservations] = useState([]);
   const theme = useTheme();
 
   const [openPopup, setOpenPopup] = useState(false);
@@ -47,18 +47,66 @@ export default function ReservationDetails() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  useEffect(() => {
-    const load = async () => {
-      const accessToken = localStorage.getItem('accessToken');
-      const response = await axios.get('/api/reservations', {
+  const rejectHandler = async (data) => {
+    console.log(data);
+    const { id, description } = data;
+    await axios.delete(`/api/reservations/delete/${id}`, {
+      headers: {
+        'x-api-key': process.env.REACT_APP_API_KEY,
+      },
+    });
+
+    const res = await axios.post(
+      '/api/notifications/create',
+      {
+        name: `${data.user.first_name} ${data.user.last_name}`,
+        type: 'reservation',
+        description,
+        condition: 'Rejected',
+        receiver: 'user',
+        email: data.user.email,
+      },
+      {
         headers: {
           'x-api-key': process.env.REACT_APP_API_KEY,
         },
-      });
-      setReservations(response.data);
-    };
+      }
+    );
+    console.log(res);
     load();
-  }, []);
+  };
+  const completeHandler = async (data) => {
+    const { id, description } = data;
+
+    await axios.put(
+      `/api/reservations/update/${id}`,
+      {
+        status: 'Completed',
+      },
+      {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY,
+        },
+      }
+    );
+    const res = await axios.post(
+      '/api/notifications/create',
+      {
+        name: `${data.user.first_name} ${data.user.last_name}`,
+        type: 'reservation',
+        description,
+        condition: 'Completed',
+        receiver: 'user',
+        email: data.user.email,
+      },
+      {
+        headers: {
+          'x-api-key': process.env.REACT_APP_API_KEY,
+        },
+      }
+    );
+    load();
+  };
 
   return (
     <>
@@ -121,43 +169,28 @@ export default function ReservationDetails() {
 
                       <TableCell>
                         <Stack direction="row" spacing={2} alignItems="flex-end" sx={{ flexGrow: 1 }}>
-                          <Button
-                            fullWidth
-                            variant="contained"
-                            color="info"
-                            endIcon={<Iconify icon={'eva:checkmark-circle-2-outline'} />}
-                            onClick={async () => {
-                              const response = await axios.put(
-                                `/api/reservations/update/${row.id}`,
-                                { status: 'Completed' },
-                                {
-                                  headers: {
-                                    'x-api-key': process.env.REACT_APP_API_KEY,
-                                  },
-                                }
-                              );
-                            }}
-                          >
-                            Complete
-                          </Button>
-                          <Button
-                            fullWidth
-                            variant="contained"
-                            color="error"
-                            endIcon={<Iconify icon={'eva:close-circle-fill'} />}
-                            onClick={() => {
-                              const response = axios.delete(`/api/reservations/delete/${row.id}`, {
-                                headers: {
-                                  'x-api-key': process.env.REACT_APP_API_KEY,
-                                },
-                              });
-                              const updateReservations = reservations.filter((r) => r.id !== row.id);
-
-                              setReservations(updateReservations);
-                            }}
-                          >
-                            Reject
-                          </Button>
+                          {row.status !== 'Completed' && (
+                            <>
+                              <Button
+                                fullWidth
+                                onClick={() => completeHandler(row)}
+                                variant="contained"
+                                color="info"
+                                endIcon={<Iconify icon={'eva:checkmark-circle-2-outline'} />}
+                              >
+                                Complete
+                              </Button>
+                              <Button
+                                fullWidth
+                                onClick={() => rejectHandler(row)}
+                                variant="contained"
+                                color="error"
+                                endIcon={<Iconify icon={'eva:close-circle-fill'} />}
+                              >
+                                Reject
+                              </Button>
+                            </>
+                          )}
                         </Stack>
                       </TableCell>
 
@@ -242,7 +275,7 @@ function MoreMenuButton({ id, setReservations, reservations }) {
           '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
         }}
       >
-        <MenuItem>
+        {/* <MenuItem>
           <Iconify icon={'eva:download-fill'} sx={{ ...ICON }} />
           Download
         </MenuItem>
@@ -250,7 +283,7 @@ function MoreMenuButton({ id, setReservations, reservations }) {
         <MenuItem>
           <Iconify icon={'eva:printer-fill'} sx={{ ...ICON }} />
           Print
-        </MenuItem>
+        </MenuItem> */}
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 

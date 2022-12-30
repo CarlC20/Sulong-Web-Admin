@@ -1,37 +1,36 @@
 import merge from 'lodash/merge';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 // @mui
 import { Card, CardHeader, Box, TextField } from '@mui/material';
 // components
 import { BaseOptionChart } from '../../../../components/chart';
 
+import { filterPending, filterCompleted } from '../../../../utils/marvsutils';
+
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [
-  // {
-  //   year: 'This Week',
-  //   data: [
-  //     { name: 'Completed', data: [48, 24] },
-  //     { name: 'Pending', data: [45, 78] },
-  //   ],
-  // },
-  {
-    id: '1',
-    data: [
-      { name: 'Completed', data: [0] },
-      { name: 'Pending', data: [30] },
-    ],
-  },
-];
-
-export default function ReportRatio() {
-  // const [seriesData, setSeriesData] = useState('This Week');
-
-  // const handleChangeSeriesData = (event) => {
-  //   setSeriesData(event.target.value);
-  // };
-
+export default function ReportRatio({ reports }) {
+  const [seriesData, setSeriesData] = useState('This Week');
+  const handleChangeSeriesData = (event) => {
+    setSeriesData(event.target.value);
+  };
+  const CHART_DATA = [
+    {
+      id: '1',
+      data: [
+        {
+          name: 'Completed',
+          data: [filterCompleted(reports)],
+        },
+        {
+          name: 'Pending',
+          data: [filterPending(reports)],
+        },
+      ],
+    },
+  ];
+  console.log(CHART_DATA);
   const chartOptions = merge(BaseOptionChart(), {
     stroke: {
       show: true,
@@ -39,7 +38,6 @@ export default function ReportRatio() {
       colors: ['transparent'],
     },
     xaxis: {
-      // categories: ['This week', 'This month'],
       categories: [''],
     },
     tooltip: {
@@ -52,7 +50,7 @@ export default function ReportRatio() {
   return (
     <Card>
       <CardHeader
-        title="Ongoing & Finished"
+        title="Completed & Pending"
         // action={
         //   <TextField
         //     select
@@ -76,8 +74,8 @@ export default function ReportRatio() {
         // }
       />
 
-      {CHART_DATA.map((item) => (
-        <Box key={item.data} sx={{ mt: 3, mx: 3 }} dir="ltr">
+      {CHART_DATA.map((item, index) => (
+        <Box key={index} sx={{ mt: 3, mx: 3 }} dir="ltr">
           {/* {item.year === seriesData && ( */}
           <ReactApexChart type="bar" series={item.data} options={chartOptions} height={364} />
           {/* )} */}

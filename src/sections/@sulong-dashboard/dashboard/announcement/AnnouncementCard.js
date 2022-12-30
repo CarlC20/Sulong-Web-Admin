@@ -17,8 +17,6 @@ import TextMaxLine from '../../../../components/TextMaxLine';
 // import TextIconLabel from '../../../../components/TextIconLabel';
 import SvgIconStyle from '../../../../components/SvgIconStyle';
 
-import { NoImage } from '../../../../assets';
-
 // ----------------------------------------------------------------------
 
 const OverlayStyle = styled('div')(({ theme }) => ({
@@ -59,9 +57,9 @@ export default function AnnouncementCard({ post, index }) {
             position: 'absolute',
           }}
         /> */}
-        <PostContent title={title} createdAt={createdAt} index={index} />
+        <PostContent id={id} title={title} createdAt={createdAt} index={index} />
         <OverlayStyle />
-        <Image alt="cover" src={NoImage} sx={{ height: 360 }} />
+        <Image alt="cover" src={post.cover_url} sx={{ height: 360 }} />
         {/* <Image alt="cover" src={coverUrl} sx={{ height: 360 }} /> */}
       </Card>
     );
@@ -93,7 +91,7 @@ export default function AnnouncementCard({ post, index }) {
             position: 'absolute',
           }}
         /> */}
-        <Image alt="cover" src={NoImage} ratio="4/3" />
+        <Image alt="cover" src={coverUrl} ratio="4/3" />
         {/* <Image alt="cover" src={coverUrl} ratio="4/3" /> */}
       </Box>
 

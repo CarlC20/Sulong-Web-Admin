@@ -31,9 +31,9 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [7, 5, 5, 5, 7, 2];
+// const CHART_DATA = [11, 4, 25, 12, 10, 15];
 
-export default function ReportType() {
+export default function ReportType({ chartData, labels }) {
   const theme = useTheme();
 
   const chartOptions = merge(BaseOptionChart(), {
@@ -43,7 +43,7 @@ export default function ReportType() {
       theme.palette.chart.violet[0],
       theme.palette.chart.yellow[0],
     ],
-    labels: ['Theft', 'Fire', 'Riot', 'Missing Person', 'Missing Pet', 'Others'],
+    labels,
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
@@ -65,7 +65,7 @@ export default function ReportType() {
     <Card>
       <CardHeader title="Type of Incident" />
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
+        <ReactApexChart type="pie" series={chartData} options={chartOptions} height={280} />
       </ChartWrapperStyle>
     </Card>
   );

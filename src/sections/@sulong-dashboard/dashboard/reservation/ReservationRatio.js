@@ -5,27 +5,20 @@ import ReactApexChart from 'react-apexcharts';
 import { Card, CardHeader, Box, TextField } from '@mui/material';
 // components
 import { BaseOptionChart } from '../../../../components/chart';
+import { filterCompleted, filterPending } from '../../../../utils/marvsutils';
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [
-  // {
-  //   id: 'This Week',
-  //   data: [
-  //     { name: 'Completed', data: [48, 24] },
-  //     { name: 'Pending', data: [45, 78] },
-  //   ],
-  // },
-  {
-    id: '1',
-    data: [
-      { name: 'Completed', data: [0] },
-      { name: 'Pending', data: [29] },
-    ],
-  },
-];
-
-export default function ReservationtRatio() {
+export default function ReservationtRatio({ reports }) {
+  const CHART_DATA = [
+    {
+      id: '1',
+      data: [
+        { name: 'Completed', data: [filterCompleted(reports)] },
+        { name: 'Pending', data: [filterPending(reports)] },
+      ],
+    },
+  ];
   // const [seriesData, setSeriesData] = useState('This Week');
 
   // const handleChangeSeriesData = (event) => {
@@ -51,7 +44,7 @@ export default function ReservationtRatio() {
   return (
     <Card>
       <CardHeader
-        title="Ongoing & Finished"
+        title="Completed & Pending"
         // action={
         //   <TextField
         //     select

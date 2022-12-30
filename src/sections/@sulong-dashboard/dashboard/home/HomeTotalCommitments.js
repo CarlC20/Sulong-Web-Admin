@@ -31,9 +31,7 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [27, 31, 33];
-
-export default function HomeTotalCommitments() {
+export default function HomeTotalCommitments({ chartData }) {
   const theme = useTheme();
 
   const chartOptions = merge(BaseOptionChart(), {
@@ -79,7 +77,7 @@ export default function HomeTotalCommitments() {
     <Card>
       <CardHeader title="Total Commitments" />
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="donut" series={CHART_DATA} options={chartOptions} height={280} />
+        <ReactApexChart type="donut" series={chartData} options={chartOptions} height={280} />
       </ChartWrapperStyle>
     </Card>
   );

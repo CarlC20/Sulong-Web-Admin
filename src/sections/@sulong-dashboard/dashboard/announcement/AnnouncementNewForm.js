@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef } from 'react';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 // form
@@ -9,6 +9,9 @@ import { useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { styled } from '@mui/material/styles';
 import { Grid, Card, Stack, Button, Typography } from '@mui/material';
+// firebase
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { storage } from '../../../../utils/firebase';
 // routes
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
@@ -28,8 +31,8 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function AnnouncementNewForm() {
+  const setProofUrlRef = useRef();
   const navigate = useNavigate();
-
   const [open, setOpen] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -46,7 +49,7 @@ export default function AnnouncementNewForm() {
     title: Yup.string().required('Title is required'),
     description: Yup.string().required('Description is required'),
     content: Yup.string().min(10).required('Content is required'),
-    // cover: Yup.mixed().required('Cover is required'),
+    cover: Yup.mixed().required('Cover is required'),
   });
 
   const defaultValues = {
@@ -70,19 +73,24 @@ export default function AnnouncementNewForm() {
   } = methods;
 
   const values = watch();
-
-  const onSubmit = async (data) => {
-    const payload = {};
-    payload.title = data.title;
-    payload.description = data.description;
-    payload.content = data.content
-      .replace('<p>', '')
-      .replace('</p>', '')
-      .replace('<d>', '')
-      .replace('</d>', '')
-      .replace('<span>', '')
-      .replace('</span>', '');
-
+  const uploadImage = (proofImage, payload) => {
+    if (proofImage != null) {
+      const imageRef = ref(storage, `images/${proofImage.name + Math.floor(Math.random * 1000)}`);
+      uploadBytes(imageRef, proofImage)
+        .then((snapshot) => {
+          getDownloadURL(snapshot.ref).then((url) => {
+            setProofUrlRef.current = url;
+            preSubmitHandler(payload);
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  };
+  const preSubmitHandler = async (rawPayload) => {
+    const payload = rawPayload;
+    payload.cover_url = setProofUrlRef.current;
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -97,6 +105,21 @@ export default function AnnouncementNewForm() {
       console.error(error);
     }
   };
+  const onSubmit = async (data) => {
+    const payload = {};
+    payload.title = data.title;
+    payload.description = data.description;
+    payload.content = data.content
+      .replace('<p>', '')
+      .replace('</p>', '')
+      .replace('<d>', '')
+      .replace('</d>', '')
+      .replace('<span>', '')
+      .replace('</span>', '');
+    console.log(data);
+    console.log(payload);
+    uploadImage(data.cover, payload);
+  };
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
@@ -104,7 +127,7 @@ export default function AnnouncementNewForm() {
 
       if (file) {
         setValue(
-          'coverUrl',
+          'cover',
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
@@ -132,15 +155,15 @@ export default function AnnouncementNewForm() {
 
                 <div>
                   <LabelStyle>Cover</LabelStyle>
-                  <RHFUploadSingleFile name="coverUrl" accept="image/*" maxSize={3145728} onDrop={handleDrop} />
+                  <RHFUploadSingleFile name="cover" accept="image/*" maxSize={3145728} onDrop={handleDrop} />
                 </div>
               </Stack>
             </Card>
 
             <Stack direction="row" spacing={1.5} sx={{ mt: 3 }}>
-              <Button fullWidth color="inherit" variant="outlined" size="large" onClick={handleOpenPreview}>
+              {/* <Button fullWidth color="inherit" variant="outlined" size="large" onClick={handleOpenPreview}>
                 Preview
-              </Button>
+              </Button> */}
               <LoadingButton fullWidth type="submit" variant="contained" size="large" loading={isSubmitting}>
                 Post
               </LoadingButton>
