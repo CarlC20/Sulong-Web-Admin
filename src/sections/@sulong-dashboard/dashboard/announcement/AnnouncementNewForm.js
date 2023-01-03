@@ -49,7 +49,7 @@ export default function AnnouncementNewForm() {
     title: Yup.string().required('Title is required'),
     description: Yup.string().required('Description is required'),
     content: Yup.string().min(10).required('Content is required'),
-    cover: Yup.mixed().required('Cover is required'),
+    // cover: Yup.mixed().required('Cover is required'),
   });
 
   const defaultValues = {

@@ -28,26 +28,26 @@ export default function UserAccountGeneral() {
 
   const { user } = useAuth();
 
-  const UpdateUserSchema = Yup.object().shape({
-    displayName: Yup.string().required('Name is required'),
-  });
+  //   const UpdateUserSchema = Yup.object().shape({
+  //     firstName: Yup.string().required('Name is required'),
+  //   });
 
   const defaultValues = {
-    displayName: user?.displayName || '',
+    firstName: user?.first_name || '',
+    lastName: user?.last_name || '',
     email: user?.email || '',
-    photoURL: user?.photoURL || '',
-    phoneNumber: user?.phoneNumber || '',
+    cover: user?.profile_url || '',
+    phoneNumber: user?.phone_number || '',
+    username: user?.username || '',
+    gender: user?.gender || '',
     country: user?.country || '',
     address: user?.address || '',
-    state: user?.state || '',
     city: user?.city || '',
-    zipCode: user?.zipCode || '',
-    about: user?.about || '',
-    isPublic: user?.isPublic || '',
+    zipCode: user?.zip_code || '',
   };
 
   const methods = useForm({
-    resolver: yupResolver(UpdateUserSchema),
+    // resolver: yupResolver(UpdateUserSchema),
     defaultValues,
   });
 
@@ -73,6 +73,8 @@ export default function UserAccountGeneral() {
     }
   };
 
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
   const preSubmitHandler = async (rawPayload) => {
     const payload = rawPayload;
     payload.profile_url = setProofUrlRef.current;
@@ -82,6 +84,9 @@ export default function UserAccountGeneral() {
       await UpdateUser(payload);
 
       enqueueSnackbar('Account update success!');
+      await delay(1500);
+
+      window.location.reload(true);
     } catch (error) {
       console.error(error);
     }
@@ -89,9 +94,12 @@ export default function UserAccountGeneral() {
 
   const onSubmit = async (data) => {
     const payload = {};
-    payload.displayName = data.first_name + data.last_name;
+    payload.firstName = data.first_name;
+    payload.lastName = data.last_name;
     payload.email = data.email;
     payload.phoneNumber = data.phone_number;
+    payload.userName = data.username;
+    payload.gender = data.gender;
     payload.address = data.address;
     payload.country = data.country;
     payload.city = data.city;
@@ -118,13 +126,19 @@ export default function UserAccountGeneral() {
     [setValue]
   );
 
+  const gender = [
+    { id: 1, label: 'Male' },
+    { id: 2, label: 'Female' },
+    { id: 3, label: 'Others' },
+  ];
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
           <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <RHFUploadAvatar
-              name="photoURL"
+              name="cover"
               accept="image/*"
               maxSize={51338758}
               onDrop={handleDrop}
@@ -161,10 +175,22 @@ export default function UserAccountGeneral() {
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
-              <RHFTextField name="displayName" label="Name" />
+              <RHFTextField name="firstName" label="First Name" />
+              <RHFTextField name="lastName" label="Last Name" />
               <RHFTextField name="email" label="Email Address" />
 
               <RHFTextField name="phoneNumber" label="Phone Number" />
+
+              <RHFTextField name="username" label="Username" />
+              <RHFSelect name="gender" label="Gender" placeholder="Gender">
+                <option value="" />
+                {gender.map((option) => (
+                  <option key={option.id} value={option.label}>
+                    {option.label}
+                  </option>
+                ))}
+              </RHFSelect>
+
               <RHFTextField name="address" label="Address" />
 
               <RHFSelect name="country" label="Country" placeholder="Country">
