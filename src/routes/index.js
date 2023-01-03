@@ -122,6 +122,7 @@ export default function Router() {
             { element: <Navigate to="/management/users/user-list" replace />, index: true },
             { path: 'user-list', element: <ManagementUserList /> },
             { path: ':name/edit', element: <ManagementUserEdit /> },
+            { path: 'my-account', element: <ManagementUserAccount /> },
           ],
         },
         { path: 'council', element: <ManagementCouncil /> },
@@ -274,6 +275,7 @@ const IncidentReportChat = Loadable(lazy(() => import('../pages/sulong-dashboard
 //  Sulong Management
 const ManagementUserList = Loadable(lazy(() => import('../pages/sulong-management/ManagementUserList')));
 const ManagementUserEdit = Loadable(lazy(() => import('../pages/sulong-management/ManagementUserEdit')));
+const ManagementUserAccount = Loadable(lazy(() => import('../pages/sulong-management/ManagementUserAccount')));
 
 const ManagementCouncil = Loadable(lazy(() => import('../pages/sulong-management/ManagementCouncil')));
 const ManagementAbout = Loadable(lazy(() => import('../pages/sulong-management/ManagementAbout')));

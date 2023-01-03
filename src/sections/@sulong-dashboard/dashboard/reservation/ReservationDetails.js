@@ -121,8 +121,8 @@ export default function ReservationDetails({ reservations, setReservations, load
                   <TableCell sx={{ minWidth: 140 }}>Date</TableCell>
                   <TableCell sx={{ minWidth: 160 }}>E-mail</TableCell>
                   <TableCell sx={{ minWidth: 120 }}>Event</TableCell>
-                  <TableCell sx={{ minWidth: 120 }}>Facility</TableCell>
                   <TableCell sx={{ minWidth: 120 }}>Description</TableCell>
+                  <TableCell sx={{ minWidth: 120 }}>Facility</TableCell>
                   <TableCell sx={{ minWidth: 120 }}>Status</TableCell>
                   <TableCell />
                   <TableCell />
@@ -134,7 +134,7 @@ export default function ReservationDetails({ reservations, setReservations, load
                     <TableRow key={row?.id}>
                       <TableCell>
                         <Stack direction="row" alignItems="center" spacing={2}>
-                          <Avatar alt={row?.name} src={row?.avatar} />
+                          <Avatar alt={row?.name} src={row.user.profile_url || null} />
                           <Typography variant="subtitle2">
                             {row?.user?.first_name} {row?.user?.last_name}
                           </Typography>
@@ -143,7 +143,6 @@ export default function ReservationDetails({ reservations, setReservations, load
                       <TableCell>{row?.createdAt && format(new Date(row?.createdAt), 'dd MMM yyyy')}</TableCell>
                       <TableCell>{row?.user?.email}</TableCell>
                       <TableCell>{row?.event_type}</TableCell>
-                      <TableCell>{row?.facility}</TableCell>
                       <TableCell>
                         <Stack direction="row" spacing={2} alignItems="flex-end" sx={{ flexGrow: 1 }}>
                           <Button
@@ -157,6 +156,7 @@ export default function ReservationDetails({ reservations, setReservations, load
                           </Button>
                         </Stack>
                       </TableCell>
+                      <TableCell>{row?.facility}</TableCell>
 
                       <TableCell>
                         <Label

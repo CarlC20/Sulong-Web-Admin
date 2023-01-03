@@ -55,16 +55,16 @@ export default function RequestInquiry() {
         />
 
         <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <ReservationDetails reservations={reports} load={load} setReservations={setReports} />
+          </Grid>
+
           <Grid item xs={12} md={6}>
             <ReservationType chartData={typeCollector(RESERVATIONLABEL, reports)} labels={RESERVATIONLABEL} />
           </Grid>
 
           <Grid item xs={12} md={6}>
             <ReservationRatio reports={reports} />
-          </Grid>
-
-          <Grid item xs={12}>
-            <ReservationDetails reservations={reports} load={load} setReservations={setReports} />
           </Grid>
         </Grid>
       </Container>

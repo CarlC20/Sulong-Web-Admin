@@ -63,7 +63,7 @@ export default function ReservationType({ chartData, labels }) {
 
   return (
     <Card>
-      <CardHeader title="Type of Event" />
+      <CardHeader title="Type of Facility" />
       <ChartWrapperStyle dir="ltr">
         <ReactApexChart type="pie" series={chartData} options={chartOptions} height={280} />
       </ChartWrapperStyle>

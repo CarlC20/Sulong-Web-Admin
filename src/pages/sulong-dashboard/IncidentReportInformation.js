@@ -54,16 +54,16 @@ export default function IncidentReportInformation() {
         />
 
         <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <ReportDetails reports={reports} setReports={setReports} load={load} />
+          </Grid>
+
           <Grid item xs={12} md={6}>
             <ReportType chartData={typeCollector(REPORTLABEL, reports)} labels={REPORTLABEL} />
           </Grid>
 
           <Grid item xs={12} md={6}>
             <ReportRatio reports={reports} />
-          </Grid>
-
-          <Grid item xs={12}>
-            <ReportDetails reports={reports} setReports={setReports} load={load} />
           </Grid>
         </Grid>
       </Container>

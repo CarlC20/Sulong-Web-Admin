@@ -136,6 +136,7 @@ export default function RequestDetails({ requests, setRequests, load }) {
                   <TableCell sx={{ minWidth: 120 }}>Date</TableCell>
                   <TableCell sx={{ minWidth: 120 }}>E-mail</TableCell>
                   <TableCell sx={{ minWidth: 120 }}>Description</TableCell>
+                  <TableCell sx={{ minWidth: 120 }}>Type</TableCell>
                   <TableCell sx={{ minWidth: 120 }}>Status</TableCell>
                   <TableCell />
                   <TableCell />
@@ -148,7 +149,7 @@ export default function RequestDetails({ requests, setRequests, load }) {
                       {/* User */}
                       <TableCell>
                         <Stack direction="row" alignItems="center" spacing={2}>
-                          <Avatar alt={row?.name} src={row?.avatar} />
+                          <Avatar alt={row?.name} src={row.user.profile_url || null} />
                           <Typography variant="subtitle2">
                             {row?.user?.first_name} {row?.user?.last_name}
                           </Typography>
@@ -173,7 +174,7 @@ export default function RequestDetails({ requests, setRequests, load }) {
                           <RequestDescription description={descriptionRef.current} />
                         </RequestPopup>
                       </TableCell>
-
+                      <TableCell>{row?.type}</TableCell>
                       {/* Status */}
                       <TableCell>
                         <Label

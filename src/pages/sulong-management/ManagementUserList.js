@@ -196,7 +196,7 @@ export default function ManagementUserList() {
                           <Checkbox checked={isItemSelected} onClick={() => handleClick(id)} />
                         </TableCell> */}
                         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-                          <Avatar alt={row?.first_name} src={avatarUrl || null} sx={{ mr: 2 }} />
+                          <Avatar alt={row?.first_name} src={row.profile_url || null} sx={{ mr: 2 }} />
                           <Typography variant="subtitle2" noWrap>
                             {row.first_name} {row.last_name}
                           </Typography>

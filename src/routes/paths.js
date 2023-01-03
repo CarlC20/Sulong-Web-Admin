@@ -74,6 +74,7 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/users'),
     userList: path(ROOTS_DASHBOARD, '/users/user-list'),
     edit: path(ROOTS_DASHBOARD, `/users/reece-chung/edit`),
+    myAccount: path(ROOTS_DASHBOARD, '/users/my-account'),
   },
 
   // sulong management ---------------------------------------------------------------------------------------------------

@@ -60,16 +60,16 @@ export default function RequestInquiry() {
         />
 
         <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <RequestDetails load={load} requests={reports} setRequests={setReports} />
+          </Grid>
+
           <Grid item xs={12} md={6}>
             <RequestType chartData={typeCollector(REQUESTLABEL, reports)} labels={REQUESTLABEL} />
           </Grid>
 
           <Grid item xs={12} md={6}>
             <RequestRatio requests={reports} />
-          </Grid>
-
-          <Grid item xs={12}>
-            <RequestDetails load={load} requests={reports} setRequests={setReports} />
           </Grid>
         </Grid>
       </Container>

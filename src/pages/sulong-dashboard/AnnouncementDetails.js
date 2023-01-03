@@ -31,7 +31,7 @@ export default function AnnouncementDetails() {
   const [title, setTitle] = useState('');
 
   const [error, setError] = useState(null);
-  console.log(id);
+  // console.log(id);
   const getPost = useCallback(async () => {
     try {
       const response = await axios.get(`/api/announcements/${id}`, {

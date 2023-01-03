@@ -19,7 +19,7 @@ import { IconButtonAnimate } from '../../../components/animate';
 const MENU_OPTIONS = [
   {
     label: 'Home',
-    linkTo: '/dashboard/home',
+    linkTo: PATH_DASHBOARD.dashboard.home,
   },
   // {
   //   label: 'Profile',
@@ -27,7 +27,7 @@ const MENU_OPTIONS = [
   // },
   {
     label: 'Edit profile',
-    linkTo: PATH_DASHBOARD.user.account,
+    linkTo: PATH_DASHBOARD.users.myAccount,
   },
 ];
 
@@ -35,7 +35,6 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const navigate = useNavigate();
-
   const { user, logout } = useAuth();
 
   const isMountedRef = useIsMountedRef();

@@ -116,9 +116,8 @@ export default function ReportDetails({ reports, setReports, load }) {
                   <TableCell sx={{ minWidth: 240 }}>Name</TableCell>
                   <TableCell sx={{ minWidth: 160 }}>Date</TableCell>
                   <TableCell sx={{ minWidth: 160 }}>E-mail</TableCell>
-                  <TableCell sx={{ minWidth: 160 }}>Type</TableCell>
-
                   <TableCell sx={{ minWidth: 220 }}>Description</TableCell>
+                  <TableCell sx={{ minWidth: 160 }}>Type</TableCell>
                   <TableCell sx={{ minWidth: 140 }}>Status</TableCell>
                   <TableCell />
                   <TableCell />
@@ -130,7 +129,7 @@ export default function ReportDetails({ reports, setReports, load }) {
                     <TableRow key={row?.id}>
                       <TableCell>
                         <Stack direction="row" alignItems="center" spacing={2}>
-                          <Avatar alt={row?.name} src={row?.avatar} />
+                          <Avatar alt={row?.first_name} src={row.user.profile_url || null} />
                           <Typography variant="subtitle2">
                             {row?.user?.first_name} {row?.user?.last_name}
                           </Typography>
@@ -139,7 +138,6 @@ export default function ReportDetails({ reports, setReports, load }) {
 
                       <TableCell>{row?.createdAt && format(new Date(row?.createdAt), 'dd MMM yyyy')}</TableCell>
                       <TableCell>{row?.user?.email} </TableCell>
-                      <TableCell>{row?.type} </TableCell>
 
                       <TableCell>
                         <Stack direction="row" spacing={2} alignItems="flex-end" sx={{ flexGrow: 1 }}>
@@ -154,6 +152,7 @@ export default function ReportDetails({ reports, setReports, load }) {
                           </Button>
                         </Stack>
                       </TableCell>
+                      <TableCell>{row?.type} </TableCell>
 
                       <TableCell>
                         <Label

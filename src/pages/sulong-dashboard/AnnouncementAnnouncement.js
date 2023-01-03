@@ -64,7 +64,7 @@ export default function AnnouncementAnnouncement() {
       });
 
       if (isMountedRef.current) {
-        console.log(response.data);
+        // console.log(response.data);
         setPosts(response.data);
       }
     } catch (error) {

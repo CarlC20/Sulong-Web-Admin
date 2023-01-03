@@ -42,12 +42,16 @@ export default function AnnouncementCard({ post, index }) {
 
   const latestPost = index === 0 || index === 1 || index === 2;
 
+  console.log('====================================');
+  console.log(post.user);
+  console.log('====================================');
+
   if (isDesktop && latestPost) {
     return (
       <Card>
-        {/* <Avatar
-          alt={author.name}
-          src={author.avatarUrl}
+        <Avatar
+          alt={post.first_name}
+          src={post.user.profile_url}
           sx={{
             zIndex: 9,
             top: 24,
@@ -56,7 +60,7 @@ export default function AnnouncementCard({ post, index }) {
             height: 40,
             position: 'absolute',
           }}
-        /> */}
+        />
         <PostContent id={id} title={title} createdAt={createdAt} index={index} />
         <OverlayStyle />
         <Image alt="cover" src={post.cover_url} sx={{ height: 360 }} />
@@ -79,19 +83,19 @@ export default function AnnouncementCard({ post, index }) {
             color: 'background.paper',
           }}
         />
-        {/* <Avatar
-          alt={author.name}
-          src={author.avatarUrl}
+        <Avatar
+          alt={post.first_name}
+          src={post.user.profile_url}
           sx={{
-            left: 24,
             zIndex: 9,
-            width: 32,
-            height: 32,
-            bottom: -16,
+            top: 24,
+            left: 24,
+            width: 40,
+            height: 40,
             position: 'absolute',
           }}
-        /> */}
-        <Image alt="cover" src={coverUrl} ratio="4/3" />
+        />
+        <Image alt="cover" src={post.cover_url} ratio="4/3" />
         {/* <Image alt="cover" src={coverUrl} ratio="4/3" /> */}
       </Box>
 
