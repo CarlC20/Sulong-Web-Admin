@@ -3,3 +3,4 @@ export { default as UserListToolbar } from './UserListToolbar';
 export { default as UserMoreMenu } from './UserMoreMenu';
 export { default as UserAccountGeneral } from './UserAccountGeneral';
 export { default as UserAccountChangePassword } from './UserAccountChangePassword';
+export { default as UserEditForm } from './UserEditForm';

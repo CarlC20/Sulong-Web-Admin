@@ -1,4 +1,5 @@
 import { Link as RouterLink } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 
@@ -37,21 +38,34 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@sul
 
 // ----------------------------------------------------------------------
 
+// const TABLE_HEAD = [
+//   { id: 'name', label: 'Name', alignRight: false },
+//   { id: 'email', label: 'Email', alignRight: false },
+//   { id: 'address', label: 'Address', alignRight: false },
+//   { id: 'country', label: 'Country', alignRight: false },
+//   { id: 'city', label: 'City', alignRight: false },
+//   { id: '' },
+// ];
+
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
+  { id: 'username', label: 'Username', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
+  { id: 'phone', label: 'Phone Number', alignRight: false },
   { id: 'address', label: 'Address', alignRight: false },
+  { id: 'region', label: 'Region', alignRight: false },
   { id: 'country', label: 'Country', alignRight: false },
   { id: 'city', label: 'City', alignRight: false },
+  { id: 'zip', label: 'Zip Code', alignRight: false },
   { id: '' },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function ManagementUserList() {
+  const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const { themeStretch } = useSettings();
-
   const [userList, setUserList] = useState([]);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
@@ -119,6 +133,8 @@ export default function ManagementUserList() {
       },
     });
 
+    enqueueSnackbar('A user has been deleted successfully!');
+
     const deleteUser = userList.filter((user) => user.id !== userId);
     setSelected([]);
     setUserList(deleteUser);
@@ -180,7 +196,7 @@ export default function ManagementUserList() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, avatarUrl, email, address, country, city } = row;
+                    const { id, username, region, email, address, country, city } = row;
                     const isItemSelected = selected.indexOf(id) !== -1;
 
                     return (
@@ -201,17 +217,17 @@ export default function ManagementUserList() {
                             {row.first_name} {row.last_name}
                           </Typography>
                         </TableCell>
-                        {/* Change to username */}
+                        <TableCell align="left">{username}</TableCell>
                         <TableCell align="left">{email}</TableCell>
-                        {/* Change to email */}
+                        <TableCell align="left">{row.phone_number}</TableCell>
                         <TableCell align="left">{address}</TableCell>
-                        {/* Change to gender */}
+                        <TableCell align="left">{region}</TableCell>
                         <TableCell align="left">{country}</TableCell>
-                        {/* Change to phone numer */}
                         <TableCell align="left">{city}</TableCell>
+                        <TableCell align="left">{row.zip_code}</TableCell>
 
                         <TableCell align="right">
-                          <UserMoreMenu onDelete={() => handleDeleteUser(id)} userName={id} />
+                          <UserMoreMenu onDelete={() => handleDeleteUser(id)} id={id} />
                         </TableCell>
                       </TableRow>
                     );

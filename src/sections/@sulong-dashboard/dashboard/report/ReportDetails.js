@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useSnackbar } from 'notistack';
 import { format } from 'date-fns';
 import { sentenceCase } from 'change-case';
 // @mui
@@ -35,6 +36,7 @@ import axios from '../../../../utils/axios';
 // ----------------------------------------------------------------------
 
 export default function ReportDetails({ reports, setReports, load }) {
+  const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const [openPopup, setOpenPopup] = useState(false);
   const isLight = theme.palette.mode === 'light';
@@ -53,6 +55,8 @@ export default function ReportDetails({ reports, setReports, load }) {
         'x-api-key': process.env.REACT_APP_API_KEY,
       },
     });
+
+    enqueueSnackbar('A report has been rejected!', { variant: 'error' });
     const res = await axios.post(
       '/api/notifications/create',
       {
@@ -85,6 +89,7 @@ export default function ReportDetails({ reports, setReports, load }) {
         },
       }
     );
+    enqueueSnackbar('A report has been completed!');
     const res = await axios.post(
       '/api/notifications/create',
       {

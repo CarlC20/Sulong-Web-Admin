@@ -9,15 +9,16 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
 import Iconify from '../../../../components/Iconify';
 import MenuPopover from '../../../../components/MenuPopover';
+import ManagementUserEdit from '../../../../pages/sulong-management/ManagementUserEdit';
 
 // ----------------------------------------------------------------------
 
 UserMoreMenu.propTypes = {
   onDelete: PropTypes.func,
-  userName: PropTypes.string,
+  id: PropTypes.string,
 };
 
-export default function UserMoreMenu({ onDelete, userName }) {
+export default function UserMoreMenu({ onDelete, id }) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -58,10 +59,10 @@ export default function UserMoreMenu({ onDelete, userName }) {
           Delete
         </MenuItem>
 
-        {/* <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.users.root}/${paramCase(userName)}/edit`}>
+        <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.users.root}/${paramCase(id)}/edit`}>
           <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
           Edit
-        </MenuItem> */}
+        </MenuItem>
       </MenuPopover>
     </>
   );

@@ -29,9 +29,9 @@ export const councilCards = [...Array(5)].map((_, index) => ({
   ][index],
   instagramLink: [
     'https://www.instagram.com/carlcstlln/',
-    'https://www.instagram.com/jerald_lanuza/',
+    'https://www.instagram.com/jrld_lnz20/',
     '',
-    'https://www.instagram.com/jameramaycha/',
+    'https://www.instagram.com/rhein_0527/',
   ][index],
   twitterLink: ['https://twitter.com/jc_cstlln', 'https://twitter.com/jrldlnz', 'https://twitter.com/jhereauDomz'][
     index

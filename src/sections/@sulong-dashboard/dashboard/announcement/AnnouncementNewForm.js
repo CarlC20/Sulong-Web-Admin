@@ -116,8 +116,8 @@ export default function AnnouncementNewForm() {
       .replace('</d>', '')
       .replace('<span>', '')
       .replace('</span>', '');
-    console.log(data);
-    console.log(payload);
+    // console.log(data);
+    // console.log(payload);
     uploadImage(data.cover, payload);
   };
 

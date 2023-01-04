@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useSnackbar } from 'notistack';
 import { format } from 'date-fns';
 import { sentenceCase } from 'change-case';
 // @mui
@@ -36,6 +37,7 @@ import axios from '../../../../utils/axios';
 
 export default function ReservationDetails({ reservations, setReservations, load }) {
   // const [reservations, setReservations] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
 
   const [openPopup, setOpenPopup] = useState(false);
@@ -55,6 +57,8 @@ export default function ReservationDetails({ reservations, setReservations, load
         'x-api-key': process.env.REACT_APP_API_KEY,
       },
     });
+
+    enqueueSnackbar('A reservation has been rejected!', { variant: 'error' });
 
     const res = await axios.post(
       '/api/notifications/create',
@@ -89,6 +93,9 @@ export default function ReservationDetails({ reservations, setReservations, load
         },
       }
     );
+
+    enqueueSnackbar('A reservation has been completed!');
+
     const res = await axios.post(
       '/api/notifications/create',
       {

@@ -1,61 +1,103 @@
+import PropTypes from 'prop-types';
 import * as Yup from 'yup';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSnackbar } from 'notistack';
-import { useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 // form
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Box, Grid, Card, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-// firebase
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { storage } from '../../../../utils/firebase';
-// hooks
-import useAuth from '../../../../hooks/useAuth';
+import { Box, Card, Grid, Stack, Switch, Typography, FormControlLabel } from '@mui/material';
 // utils
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { fData } from '../../../../utils/formatNumber';
+// routes
+import { PATH_DASHBOARD } from '../../../../routes/paths';
 // _mock
 import { countries } from '../../../../_sulong_mock';
 // components
-import { FormProvider, RHFSelect, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form';
+import Label from '../../../../components/Label';
+import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form';
 
-import { UpdateAdmin } from '../../../../pages/sulong-management/users/user';
+import { UpdateUser } from '../../../../pages/sulong-management/users/user';
+
+import { storage } from '../../../../utils/firebase';
+
 // ----------------------------------------------------------------------
 
-export default function UserAccountGeneral() {
+UserEditForm.propTypes = {
+  isEdit: PropTypes.bool,
+  currentUser: PropTypes.object,
+};
+
+export default function UserEditForm({ isEdit, currentUser }) {
+  const navigate = useNavigate();
   const setProofUrlRef = useRef();
+
+  const [id, setId] = useState();
+
   const { enqueueSnackbar } = useSnackbar();
 
-  const { user } = useAuth();
+  const NewUserSchema = Yup.object().shape({
+    // name: Yup.string().required('Name is required'),
+    // email: Yup.string().required('Email is required').email(),
+    // phoneNumber: Yup.string().required('Phone number is required'),
+    // address: Yup.string().required('Address is required'),
+    // country: Yup.string().required('country is required'),
+    // company: Yup.string().required('Company is required'),
+    // state: Yup.string().required('State is required'),
+    // city: Yup.string().required('City is required'),
+    // role: Yup.string().required('Role Number is required'),
+    cover: Yup.mixed().test('required', 'Profile picture is required', (value) => value !== ''),
+  });
 
-  //   const UpdateUserSchema = Yup.object().shape({
-  //     firstName: Yup.string().required('Name is required'),
-  //   });
-
+  //   const defaultValues = useMemo(
+  //     () => ({
+  //       firstName: currentUser?.first_name || '',
+  //       lastName: currentUser?.last_name || '',
+  //       email: currentUser?.email || '',
+  //       cover: currentUser?.profile_url || '',
+  //       phoneNumber: currentUser?.phone_number || '',
+  //       username: currentUser?.username || '',
+  //       gender: currentUser?.gender || '',
+  //       country: currentUser?.country || '',
+  //       address: currentUser?.address || '',
+  //       city: currentUser?.city || '',
+  //       zipCode: currentUser?.zip_code || '',
+  //     }),
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  //     [currentUser]
+  //   );
   const defaultValues = {
-    firstName: user?.first_name || '',
-    lastName: user?.last_name || '',
-    email: user?.email || '',
-    cover: user?.profile_url || '',
-    phoneNumber: user?.phone_number || '',
-    username: user?.username || '',
-    gender: user?.gender || '',
-    country: user?.country || '',
-    address: user?.address || '',
-    city: user?.city || '',
-    zipCode: user?.zip_code || '',
+    firstName: currentUser?.first_name || '',
+    lastName: currentUser?.last_name || '',
+    email: currentUser?.email || '',
+    cover: currentUser?.profile_url || '',
+    phoneNumber: currentUser?.phone_number || '',
+    username: currentUser?.username || '',
+    gender: currentUser?.gender || '',
+    country: currentUser?.country || '',
+    address: currentUser?.address || '',
+    city: currentUser?.city || '',
+    zipCode: currentUser?.zip_code || '',
   };
 
   const methods = useForm({
-    // resolver: yupResolver(UpdateUserSchema),
+    resolver: yupResolver(NewUserSchema),
     defaultValues,
   });
 
   const {
+    reset,
+    watch,
+    control,
     setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
+
+  const values = watch();
 
   const uploadImage = (proofImage, payload) => {
     if (proofImage != null) {
@@ -80,10 +122,9 @@ export default function UserAccountGeneral() {
     payload.profile_url = setProofUrlRef.current;
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
+      await UpdateUser(id, payload);
 
-      await UpdateAdmin(payload);
-
-      enqueueSnackbar('Admin account update success!');
+      enqueueSnackbar('User account update success!');
       await delay(1500);
 
       window.location.reload(true);
@@ -91,6 +132,18 @@ export default function UserAccountGeneral() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (isEdit && currentUser) {
+      reset(defaultValues);
+    }
+    if (!isEdit) {
+      reset(defaultValues);
+    }
+    setId(currentUser.id);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEdit, currentUser]);
 
   const onSubmit = async (data) => {
     const payload = {};
@@ -137,32 +190,30 @@ export default function UserAccountGeneral() {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
-            <RHFUploadAvatar
-              name="cover"
-              accept="image/*"
-              maxSize={51338758}
-              onDrop={handleDrop}
-              helperText={
-                <Typography
-                  variant="caption"
-                  sx={{
-                    mt: 2,
-                    mx: 'auto',
-                    display: 'block',
-                    textAlign: 'center',
-                    color: 'text.secondary',
-                  }}
-                >
-                  Edit profile picture
-                  <br />
-                  Allowed *.jpeg, *.jpg, *.png,
-                  <br /> max size of {fData(51338758)}
-                </Typography>
-              }
-            />
-
-            {/* <RHFSwitch name="isPublic" labelPlacement="start" label="Public Profile" sx={{ mt: 5 }} /> */}
+          <Card sx={{ py: 10, px: 3 }}>
+            <Box sx={{ mb: 5 }}>
+              <RHFUploadAvatar
+                name="cover"
+                accept="image/*"
+                maxSize={51338758}
+                onDrop={handleDrop}
+                helperText={
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      mt: 2,
+                      mx: 'auto',
+                      display: 'block',
+                      textAlign: 'center',
+                      color: 'text.secondary',
+                    }}
+                  >
+                    Allowed *.jpeg, *.jpg, *.png, *.gif
+                    <br /> max size of {fData(51338758)}
+                  </Typography>
+                }
+              />
+            </Box>
           </Card>
         </Grid>
 
@@ -171,15 +222,14 @@ export default function UserAccountGeneral() {
             <Box
               sx={{
                 display: 'grid',
-                rowGap: 3,
                 columnGap: 2,
+                rowGap: 3,
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
               <RHFTextField name="firstName" label="First Name" />
               <RHFTextField name="lastName" label="Last Name" />
               <RHFTextField name="email" label="Email Address" />
-
               <RHFTextField name="phoneNumber" label="Phone Number" />
 
               <RHFTextField name="username" label="Username" />
@@ -207,9 +257,9 @@ export default function UserAccountGeneral() {
               <RHFTextField name="zipCode" label="Zip/Code" />
             </Box>
 
-            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                Save Changes
+                {!isEdit ? 'Create User' : 'Save Changes'}
               </LoadingButton>
             </Stack>
           </Card>

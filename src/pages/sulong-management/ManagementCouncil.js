@@ -3,7 +3,7 @@ import { Container, Box, Typography } from '@mui/material';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // _mock_
-import { _sulongCards } from '../../_mock';
+import { councilCards } from '../../_sulong_mock';
 // components
 import Page from '../../components/Page';
 // sections
@@ -30,7 +30,7 @@ export default function UserCards() {
             },
           }}
         >
-          {_sulongCards.map((user) => (
+          {councilCards.map((user) => (
             <CouncilChart key={user.id} user={user} />
           ))}
         </Box>

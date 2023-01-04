@@ -1,3 +1,4 @@
+import { useSnackbar } from 'notistack';
 import { format } from 'date-fns';
 import { sentenceCase } from 'change-case';
 // @mui
@@ -37,6 +38,7 @@ import { RequestPopup, RequestDescription } from './index';
 // ----------------------------------------------------------------------
 
 export default function RequestDetails({ requests, setRequests, load }) {
+  const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const [openPopup, setOpenPopup] = useState(false);
   const isLight = theme.palette.mode === 'light';
@@ -71,6 +73,7 @@ export default function RequestDetails({ requests, setRequests, load }) {
         'x-api-key': process.env.REACT_APP_API_KEY,
       },
     });
+    enqueueSnackbar('A request has been rejected!', { variant: 'error' });
     const res = await axios.post(
       '/api/notifications/create',
       {
@@ -103,6 +106,9 @@ export default function RequestDetails({ requests, setRequests, load }) {
         },
       }
     );
+
+    enqueueSnackbar('A request has been completed!');
+
     const res = await axios.post(
       '/api/notifications/create',
       {

@@ -1,7 +1,7 @@
 import { setSession } from '../../../utils/jwt';
 import axios from '../../../utils/axios';
 
-export const UpdateUser = async (payload) => {
+export const UpdateAdmin = async (payload) => {
   const accessToken = localStorage.getItem('accessToken');
   try {
     setSession(accessToken);
@@ -15,6 +15,21 @@ export const UpdateUser = async (payload) => {
     const id = myProfile.data.id;
 
     const res = await axios.put(`api/profile/${id}`, payload, {
+      headers: {
+        'x-api-key': process.env.REACT_APP_API_KEY,
+      },
+    });
+  } catch (error) {
+    //
+  }
+};
+
+export const UpdateUser = async (id, payload) => {
+  const accessToken = localStorage.getItem('accessToken');
+  try {
+    setSession(accessToken);
+
+    const res = await axios.put(`api/profile/${id}/edit`, payload, {
       headers: {
         'x-api-key': process.env.REACT_APP_API_KEY,
       },
