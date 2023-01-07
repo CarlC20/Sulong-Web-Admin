@@ -141,8 +141,7 @@ export default function ReservationDetails({ reservations, setReservations, load
                     <TableRow key={row?.id}>
                       <TableCell>
                         <Stack direction="row" alignItems="center" spacing={2}>
-                          //<Avatar alt={row?.name} src={row?.user.profile_url || null} />
-                    
+                          <Avatar alt={row?.name} src={row?.user.profile_url || null} />
                           <Typography variant="subtitle2">
                             {row?.user?.first_name} {row?.user?.last_name}
                           </Typography>
