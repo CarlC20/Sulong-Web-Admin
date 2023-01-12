@@ -45,6 +45,7 @@ export default function RequestDetails({ requests, setRequests, load }) {
   // const [requests, setRequests] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
+  const [rejectedData,setRejectedData] = useState(null)
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -65,32 +66,39 @@ export default function RequestDetails({ requests, setRequests, load }) {
     };
     load();
   }, []);
-  const rejectHandler = async (data) => {
-    const { id, description } = data;
-
-    await axios.delete(`/api/requests/delete/${id}`, {
-      headers: {
-        'x-api-key': process.env.REACT_APP_API_KEY,
-      },
-    });
-    enqueueSnackbar('A request has been rejected!', { variant: 'error' });
-    const res = await axios.post(
-      '/api/notifications/create',
-      {
-        name: `${data.user.first_name} ${data.user.last_name}`,
-        type: 'request_inquiries',
-        description,
-        condition: 'Rejected',
-        receiver: 'user',
-        email: data.user.email,
-      },
-      {
-        headers: {
+  const rejectedDescriptionRef = useRef("")
+  const [openRejectPopup,setOpenRejectPopup] = useState(false)
+  const rejectHandler = async () => {
+    if(rejectedDescriptionRef.current?.value.length!==0){
+      const { id, user } = rejectedData;
+      console.log(rejectedData)
+      const res1 = await axios.delete(`/api/requests/delete/${id}`, {
+        headers: {  
           'x-api-key': process.env.REACT_APP_API_KEY,
         },
+      });
+      setOpenRejectPopup(false)
+      const newData = {
+        name: `${user.first_name} ${user.last_name}`,
+        type: 'request_inquiries',
+        description:rejectedDescriptionRef.current?.value,
+        condition: 'Rejected',
+        receiver: 'user',
+        email: user.email,
       }
-    );
-    load();
+      enqueueSnackbar('A request has been rejected!', { variant: 'error' });
+      await axios.post(
+        '/api/notifications/create',
+        newData,
+        {
+          headers: {
+            'x-api-key': process.env.REACT_APP_API_KEY,
+          },
+        }
+      );
+      load();
+    }
+
   };
   const completeHandler = async (data) => {
     const { id, description } = data;
@@ -176,8 +184,8 @@ export default function RequestDetails({ requests, setRequests, load }) {
                         >
                           View Description
                         </Button>
-                        <RequestPopup title="Request Description" openPopup={openPopup} setOpenPopup={setOpenPopup}>
-                          <RequestDescription description={descriptionRef.current} />
+                        <RequestPopup  title="Request Description" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+                          <RequestDescription  description={descriptionRef.current} />
                         </RequestPopup>
                       </TableCell>
                       <TableCell>{row?.type}</TableCell>
@@ -207,11 +215,17 @@ export default function RequestDetails({ requests, setRequests, load }) {
                                 fullWidth
                                 variant="contained"
                                 color="error"
-                                onClick={() => rejectHandler(row)}
+                                onClick={() => {
+                                  setOpenRejectPopup(true);
+                                  setRejectedData(row)
+                                }}
                                 endIcon={<Iconify icon={'eva:close-circle-fill'} />}
                               >
                                 Reject
                               </Button>
+                              <RequestPopup reject="yes" iRef={rejectedDescriptionRef} rejectHandler={rejectHandler} title="Reject Request" openPopup={openRejectPopup} setOpenPopup={setOpenRejectPopup}>
+                                <RequestDescription description={descriptionRef.current} />
+                              </RequestPopup>
                             </>
                           )}
                         </Stack>
