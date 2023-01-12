@@ -1,5 +1,7 @@
+import { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, DialogTitle, DialogContent, Typography, Button } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Typography, Button, TextField } from '@mui/material';
+
 
 RequestPopup.protoTypes = {
   title: PropTypes.string,
@@ -9,8 +11,7 @@ RequestPopup.protoTypes = {
 };
 
 export default function RequestPopup(props) {
-  const { title, children, openPopup, setOpenPopup } = props;
-
+  const { title, children, openPopup,setOpenPopup } = props;
   return (
     <Dialog maxWidth="md" open={openPopup}>
       <DialogTitle sx={{ display: 'flex' }}>
@@ -26,7 +27,32 @@ export default function RequestPopup(props) {
           X
         </Button>
       </DialogTitle>
-      <DialogContent sx={{ p: 5 }}>{children}</DialogContent>
+      {props?.reject === "yes" ? 
+        <div style={{padding:"0 1.5rem 1rem 1.5rem",display:"flex", flexDirection:"column"}}>
+        <input type="text" required ref={props?.iRef} style={customStyle} placeholder="Enter description"/>
+          <Button
+sx={{ marginBottom:1}}
+
+          onClick={props?.rejectHandler}
+            variant="contained"
+          >
+            Confirm
+          </Button>
+        </div>
+:
+        <DialogContent sx={{ p: 5 }}>{children}</DialogContent>
+      }
     </Dialog>
   );
+}
+const customStyle={
+  padding:"1em",
+  border:0,
+  borderColor:"#fff",
+  borderRadius:".5rem",
+  backgroundColor:"#161c24",
+  color:"#fff",
+  marginTop:"1rem", marginBottom:"1rem",
+  animationName: "mui-auto-fill-cancel",
+    animationDuration: "10ms",
 }
