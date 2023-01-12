@@ -41,17 +41,24 @@ export default function ReservationDetails({ reservations, setReservations, load
   const theme = useTheme();
 
   const [openPopup, setOpenPopup] = useState(false);
+  const [openRejectPopup,setOpenRejectPopup] = useState(false)
+  
   const descriptionRef = useRef();
   const isLight = theme.palette.mode === 'light';
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
+  const rejectedDescriptionRef = useRef("")
+  const [rejectedData,setRejectedData] = useState(null)
+
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const rejectHandler = async (data) => {
-    console.log(data);
-    const { id, description } = data;
+  const rejectHandler = async () => {
+    if(rejectedDescriptionRef.current?.value.length!==0){
+    const { id,user} = rejectedData;
+    console.log(rejectedData)
     await axios.delete(`/api/reservations/delete/${id}`, {
       headers: {
         'x-api-key': process.env.REACT_APP_API_KEY,
@@ -59,16 +66,17 @@ export default function ReservationDetails({ reservations, setReservations, load
     });
 
     enqueueSnackbar('A reservation has been rejected!', { variant: 'error' });
+    setOpenRejectPopup(false)
 
     const res = await axios.post(
       '/api/notifications/create',
       {
-        name: `${data.user.first_name} ${data.user.last_name}`,
+        name: `${user.first_name} ${user.last_name}`,
         type: 'reservation',
-        description,
+        description:rejectedDescriptionRef.current?.value,
         condition: 'Rejected',
         receiver: 'user',
-        email: data.user.email,
+        email: user.email,
       },
       {
         headers: {
@@ -78,6 +86,7 @@ export default function ReservationDetails({ reservations, setReservations, load
     );
     console.log(res);
     load();
+    }
   };
   const completeHandler = async (data) => {
     const { id, description } = data;
@@ -189,13 +198,19 @@ export default function ReservationDetails({ reservations, setReservations, load
                               </Button>
                               <Button
                                 fullWidth
-                                onClick={() => rejectHandler(row)}
+                                onClick={() => {
+                                  setOpenRejectPopup(true);                                
+                                  setRejectedData(row)
+                                }}
                                 variant="contained"
                                 color="error"
                                 endIcon={<Iconify icon={'eva:close-circle-fill'} />}
                               >
                                 Reject
                               </Button>
+                              <RequestPopup reject="yes" iRef={rejectedDescriptionRef} rejectHandler={rejectHandler} title="Reject Request" openPopup={openRejectPopup} setOpenPopup={setOpenRejectPopup}>
+                                <RequestDescription description={descriptionRef?.current} />
+                              </RequestPopup>
                             </>
                           )}
                         </Stack>
